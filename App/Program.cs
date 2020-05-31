@@ -64,6 +64,12 @@ namespace App
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreateParameterTypeDefenitions(pluginAssembly);
                 }).ToList();
+
+                Console.WriteLine("--ParameterTypeDefenition--");
+                parameterTypeDefenitions.ForEach(o =>
+                {
+                    Console.WriteLine(o.ToString());
+                });
             }
             catch (Exception ex)
             {
