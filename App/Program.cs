@@ -26,15 +26,15 @@ namespace App
             return loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
         }
 
-        static IEnumerable<IParameterTypeDefenition> CreateParameterTypeDefenitions(Assembly assembly)
+        static IEnumerable<ParameterTypeDefenition> CreateParameterTypeDefenitions(Assembly assembly)
         {
             int count = 0;
 
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(IParameterTypeDefenition).IsAssignableFrom(type))
+                if (typeof(ParameterTypeDefenition).IsAssignableFrom(type))
                 {
-                    IParameterTypeDefenition result = Activator.CreateInstance(type) as IParameterTypeDefenition;
+                    ParameterTypeDefenition result = Activator.CreateInstance(type) as ParameterTypeDefenition;
                     if (result != null)
                     {
                         count++;
@@ -61,7 +61,7 @@ namespace App
                     "F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins\\StandardPlugins\\StandardPlugin.dll"
                 };
 
-                List<IParameterTypeDefenition> parameterTypeDefenitions = pluginPaths.SelectMany(pluginPath =>
+                List<ParameterTypeDefenition> parameterTypeDefenitions = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreateParameterTypeDefenitions(pluginAssembly);

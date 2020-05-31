@@ -2,10 +2,10 @@
 
 namespace StandardPlugin
 {
-    public class StringParameterDefenition : IParameterTypeDefenition
+    public class StringParameterDefenition : ParameterTypeDefenition
     {
-        public string Name => "String Parameter";
+        public override string Name => "String Parameter";
 
-        public string Description => "String as Parameter";
+        public override string Description => "String as Parameter";
     }
 }
