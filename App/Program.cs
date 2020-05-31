@@ -26,15 +26,15 @@ namespace App
             return loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
         }
 
-        static IEnumerable<ParameterType> CreateParameterTypeDefenitions(Assembly assembly)
+        static IEnumerable<T> CreatePlugins<T>(Assembly assembly) where T : class
         {
             int count = 0;
 
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(ParameterType).IsAssignableFrom(type))
+                if (typeof(T).IsAssignableFrom(type))
                 {
-                    ParameterType result = Activator.CreateInstance(type) as ParameterType;
+                    T result = Activator.CreateInstance(type) as T;
                     if (result != null)
                     {
                         count++;
@@ -47,33 +47,7 @@ namespace App
             {
                 string availableTypes = string.Join(",", assembly.GetTypes().Select(t => t.FullName));
                 throw new ApplicationException(
-                    $"Can't find any type which implements ICommand in {assembly} from {assembly.Location}.\n" +
-                    $"Available types: {availableTypes}");
-            }
-        }
-
-        static IEnumerable<BuildStep> CreateBuildSteps(Assembly assembly)
-        {
-            int count = 0;
-
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (typeof(BuildStep).IsAssignableFrom(type))
-                {
-                    BuildStep result = Activator.CreateInstance(type) as BuildStep;
-                    if (result != null)
-                    {
-                        count++;
-                        yield return result;
-                    }
-                }
-            }
-
-            if (count == 0)
-            {
-                string availableTypes = string.Join(",", assembly.GetTypes().Select(t => t.FullName));
-                throw new ApplicationException(
-                    $"Can't find any type which implements ICommand in {assembly} from {assembly.Location}.\n" +
+                    $"Can't find any type which implements {typeof(T).ToString()} in {assembly} from {assembly.Location}.\n" +
                     $"Available types: {availableTypes}");
             }
         }
@@ -88,13 +62,13 @@ namespace App
                 List<ParameterType> parameterTypeDefenitions = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
-                    return CreateParameterTypeDefenitions(pluginAssembly);
+                    return CreatePlugins<ParameterType>(pluginAssembly);
                 }).ToList();
 
                 List<BuildStep> buildSteps = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
-                    return CreateBuildSteps(pluginAssembly);
+                    return CreatePlugins<BuildStep>(pluginAssembly);
                 }).ToList();
 
                 Console.WriteLine("--ParameterType--");
