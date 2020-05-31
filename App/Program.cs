@@ -56,20 +56,14 @@ namespace App
         {
             try
             {
-                string[] pluginPaths = new string[]
-                {
-                    "F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins\\StandardPlugins\\StandardPlugins.dll"
-                };
+                string[] pluginPaths = Directory.GetFiles("F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins", "*.*", SearchOption.AllDirectories)
+                    .Where(s => s.EndsWith(".dll")).ToArray();
 
                 List<ParameterTypeDefenition> parameterTypeDefenitions = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreateParameterTypeDefenitions(pluginAssembly);
                 }).ToList();
-
-                
-                Console.WriteLine(parameterTypeDefenitions[0].VerifyValue("slave"));
-                
             }
             catch (Exception ex)
             {
