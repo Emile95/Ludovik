@@ -56,23 +56,27 @@ namespace App
         {
             try
             {
+                //Path of implementention of Plugins
                 string[] pluginPaths = Directory.GetFiles("F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins", "*.*", SearchOption.AllDirectories)
                     .Where(s => s.EndsWith(".dll")).ToArray();
 
-                List<ParameterType> parameterTypeDefenitions = pluginPaths.SelectMany(pluginPath =>
+                //Load Implmentation of ParameterType
+                List<ParameterType> parameterType = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<ParameterType>(pluginAssembly);
                 }).ToList();
 
+                //Load Implmentation of BuildStep
                 List<BuildStep> buildSteps = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<BuildStep>(pluginAssembly);
                 }).ToList();
 
+                //Console Output Loaded Plugins
                 Console.WriteLine("--ParameterType--");
-                parameterTypeDefenitions.ForEach(o =>
+                parameterType.ForEach(o =>
                 {
                     Console.WriteLine(o.ToString());
                 });
