@@ -58,7 +58,7 @@ namespace App
             {
                 string[] pluginPaths = new string[]
                 {
-                    "F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins\\StandardPlugins\\StandardPlugin.dll"
+                    "F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins\\StandardPlugins\\StandardPlugins.dll"
                 };
 
                 List<ParameterTypeDefenition> parameterTypeDefenitions = pluginPaths.SelectMany(pluginPath =>
@@ -67,9 +67,9 @@ namespace App
                     return CreateParameterTypeDefenitions(pluginAssembly);
                 }).ToList();
 
-                parameterTypeDefenitions.ForEach(item => {
-                    Console.WriteLine("Parameter Type Definition -- Name : " + item.Name + ", Description : " + item.Description);
-                });
+                
+                Console.WriteLine(parameterTypeDefenitions[0].VerifyValue("slave"));
+                
             }
             catch (Exception ex)
             {

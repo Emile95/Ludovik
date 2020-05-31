@@ -1,10 +1,7 @@
-﻿using Library;
-
-namespace Plugins
+﻿namespace Plugins
 {
-    public abstract class ParameterTypeDefenition : IDescribable
+    public abstract class ParameterTypeDefenition
     {
-        public abstract string Name { get; }
-        public abstract string Description { get; }
+        public abstract string VerifyValue(string value);
     }
 }
