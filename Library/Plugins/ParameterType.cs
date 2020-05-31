@@ -1,6 +1,6 @@
-﻿namespace Plugins
+﻿namespace Library.Plugins
 {
-    public abstract class ParameterTypeDefenition
+    public abstract class ParameterType
     {
         public abstract string VerifyValue(string value);
     }

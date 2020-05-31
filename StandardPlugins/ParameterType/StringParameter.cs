@@ -1,8 +1,8 @@
-﻿using Plugins;
+﻿using Library.Plugins;
 
 namespace StandardPlugins
 {
-    public class StringParameterDefenition : ParameterTypeDefenition
+    public class StringParameter : ParameterType
     {
         public sealed override string VerifyValue(string value)
         {

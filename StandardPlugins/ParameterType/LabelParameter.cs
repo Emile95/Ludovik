@@ -1,9 +1,9 @@
-﻿using Plugins;
+﻿using Library.Plugins;
 using System.IO;
 
 namespace StandardPlugins
 {
-    public class LabelParameterDefenition : ParameterTypeDefenition
+    public class LabelParameter : ParameterType
     {
         public sealed override string VerifyValue(string value)
         {
