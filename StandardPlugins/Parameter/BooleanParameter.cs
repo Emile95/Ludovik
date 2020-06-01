@@ -1,13 +1,15 @@
-﻿using Library.Interface.ISettable;
-using Library.Plugins.ParameterType;
+﻿using Library.Plugins.Parameter;
 
 namespace StandardPlugins
 {
-    public class BooleanParameter : ParameterType
+    public class BooleanParameter : Parameter
     {
-        public override ISettable.ParameterDefenition[] GetSettingDefenitions()
+        public BooleanParameter() : this("Default") {}
+
+        public BooleanParameter(string Name, string DefaultValue="false")
         {
-            return null;
+            this.Name = Name;
+            this.DefaultValue = DefaultValue;
         }
 
         public sealed override string VerifyValue(string value)

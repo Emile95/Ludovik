@@ -4,10 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using Library.Plugins;
 using Library.Plugins.BuildStep;
 using Library.Plugins.Job;
-using Library.Plugins.ParameterType;
+using Library.Plugins.Parameter;
 
 namespace App
 {
@@ -64,10 +63,10 @@ namespace App
                     .Where(s => s.EndsWith(".dll")).ToArray();
 
                 //Load Implmentation of ParameterType
-                List<ParameterType> parameterType = pluginPaths.SelectMany(pluginPath =>
+                List<Parameter> parameterType = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
-                    return CreatePlugins<ParameterType>(pluginAssembly);
+                    return CreatePlugins<Parameter>(pluginAssembly);
                 }).ToList();
 
                 //Load Implmentation of BuildStep
@@ -78,11 +77,11 @@ namespace App
                 }).ToList();
 
                 //Load Implmentation of Job
-                List<Job> jobs = pluginPaths.SelectMany(pluginPath =>
+                /*List<Job> jobs = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<Job>(pluginAssembly);
-                }).ToList();
+                }).ToList();*/
 
                 //Console Output Loaded Plugins
                 Console.WriteLine("--ParameterType--");
@@ -95,11 +94,15 @@ namespace App
                 {
                     Console.WriteLine(o.ToString());
                 });
-                Console.WriteLine("--Job--");
+                /*Console.WriteLine("--Job--");
                 jobs.ForEach(o =>
                 {
                     Console.WriteLine(o.ToString());
-                });
+                });*/
+
+
+                Parameter[] pars = buildSteps[0].GetSettingDefenitions();
+                Console.WriteLine(pars[0].Name);
             }
             catch (Exception ex)
             {

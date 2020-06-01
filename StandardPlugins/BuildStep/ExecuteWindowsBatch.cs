@@ -1,16 +1,15 @@
-﻿using Library.Interface.ISettable;
-using Library.Plugins.BuildStep;
+﻿using Library.Plugins.BuildStep;
+using Library.Plugins.Parameter;
 
 namespace StandardPlugins
 {
     public class ExecuteWindowsBatch : BuildStep
     {
-        public ExecuteWindowsBatch()
+        public override Parameter[] GetSettingDefenitions()
         {
-        }
-        public override ISettable.ParameterDefenition[] GetSettingDefenitions()
-        {
-            return null;
+            return new Parameter[] {
+                new StringParameter("Command") { }
+            };
         }
         public override void Action(string[] paramValues)
         {

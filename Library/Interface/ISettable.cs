@@ -1,14 +1,15 @@
-﻿using Library.Plugins.ParameterType;
+﻿using Library.Plugins.Parameter;
 
 namespace Library.Interface.ISettable
 {
     public interface ISettable
     {
-        ParameterDefenition[] GetSettingDefenitions();
+        Parameter[] GetSettingDefenitions();
+        Parameter[] GetAdvancedSettingDefenitions();
 
         public class ParameterDefenition
         {
-            public ParameterType ParamType { get; set; }
+            public Parameter ParamType { get; set; }
             public string DefaultValue { get; }
         }
     }
