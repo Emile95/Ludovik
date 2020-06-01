@@ -1,5 +1,5 @@
 ﻿using Library.Plugins.BuildStep;
-using Library.Plugins.Parameter;
+using Library.Plugins.ParameterType;
 
 namespace StandardPlugins
 {

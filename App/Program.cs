@@ -78,6 +78,8 @@ namespace App
 
                 PluginStorage.ParameterTypes.AddRange(parameterTypes);
                 PluginStorage.BuildSteps.AddRange(buildSteps);
+
+                Console.WriteLine(parameterTypes[1].VerifyValue("ExecuteWindowsBatch"));
             }
             catch (Exception ex)
             {

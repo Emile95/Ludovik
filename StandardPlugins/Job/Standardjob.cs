@@ -1,5 +1,5 @@
 ﻿using Library.Plugins.Job;
-using Library.Plugins.Parameter;
+using Library.Plugins.ParameterType;
 
 namespace StandardPlugins
 {
