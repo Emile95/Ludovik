@@ -1,4 +1,4 @@
-﻿using Library.Interface;
+﻿using Library.Interface.ISettable;
 
 namespace Library.Plugins.Job
 {

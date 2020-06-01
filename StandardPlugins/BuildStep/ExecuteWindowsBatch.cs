@@ -1,4 +1,4 @@
-﻿using Library;
+﻿using Library.Interface.ISettable;
 using Library.Plugins.BuildStep;
 
 namespace StandardPlugins
@@ -7,6 +7,10 @@ namespace StandardPlugins
     {
         public ExecuteWindowsBatch()
         {
+        }
+        public override ISettable.ParameterDefenition[] GetSettingDefenitions()
+        {
+            return null;
         }
         public override void Action(string[] paramValues)
         {

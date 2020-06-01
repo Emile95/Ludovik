@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection;
 
 using Library.Plugins;
+using Library.Plugins.BuildStep;
+using Library.Plugins.Job;
+using Library.Plugins.ParameterType;
 
 namespace App
 {
