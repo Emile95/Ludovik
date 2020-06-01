@@ -74,6 +74,13 @@ namespace App
                     return CreatePlugins<BuildStep>(pluginAssembly);
                 }).ToList();
 
+                //Load Implmentation of Job
+                List<Job> jobs = pluginPaths.SelectMany(pluginPath =>
+                {
+                    Assembly pluginAssembly = LoadPlugin(pluginPath);
+                    return CreatePlugins<Job>(pluginAssembly);
+                }).ToList();
+
                 //Console Output Loaded Plugins
                 Console.WriteLine("--ParameterType--");
                 parameterType.ForEach(o =>
@@ -82,6 +89,11 @@ namespace App
                 });
                 Console.WriteLine("--BuildStep--");
                 buildSteps.ForEach(o =>
+                {
+                    Console.WriteLine(o.ToString());
+                });
+                Console.WriteLine("--Job--");
+                jobs.ForEach(o =>
                 {
                     Console.WriteLine(o.ToString());
                 });

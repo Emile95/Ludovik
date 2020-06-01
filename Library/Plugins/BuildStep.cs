@@ -1,8 +1,9 @@
-﻿namespace Library.Plugins
+﻿using Library.Interface;
+
+namespace Library.Plugins.BuildStep
 {
-    public abstract class BuildStep
+    public abstract class BuildStep : ISettable
     {
-        public ParameterSetting[] ParamSettings { get; protected set; }
         public abstract void Action(string[] paramValues);
     }
 }

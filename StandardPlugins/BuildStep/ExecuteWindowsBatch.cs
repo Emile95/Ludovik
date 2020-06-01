@@ -1,5 +1,5 @@
 ﻿using Library;
-using Library.Plugins;
+using Library.Plugins.BuildStep;
 
 namespace StandardPlugins
 {
@@ -7,11 +7,7 @@ namespace StandardPlugins
     {
         public ExecuteWindowsBatch()
         {
-            ParamSettings = new ParameterSetting[] {
-                new ParameterSetting("Command", new StringParameter())
-            };
         }
-
         public override void Action(string[] paramValues)
         {
             System.Diagnostics.Process.Start("CMD.exe", paramValues[0]);
