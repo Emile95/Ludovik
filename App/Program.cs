@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
+using Library;
 using Library.Plugins.BuildStep;
 using Library.Plugins.Job;
 using Library.Plugins.Parameter;
@@ -63,7 +63,7 @@ namespace App
                     .Where(s => s.EndsWith(".dll")).ToArray();
 
                 //Load Implmentation of ParameterType
-                List<Parameter> parameterType = pluginPaths.SelectMany(pluginPath =>
+                List<Parameter> parameters = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<Parameter>(pluginAssembly);
@@ -75,6 +75,9 @@ namespace App
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<BuildStep>(pluginAssembly);
                 }).ToList();
+
+                PluginStorage.Parameters.AddRange(parameters);
+                PluginStorage.BuildSteps.AddRange(buildSteps);
             }
             catch (Exception ex)
             {
