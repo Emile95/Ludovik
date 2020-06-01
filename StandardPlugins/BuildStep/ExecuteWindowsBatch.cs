@@ -5,10 +5,14 @@ namespace StandardPlugins
 {
     public class ExecuteWindowsBatch : BuildStep
     {
-        public override Parameter[] GetSettingDefenitions()
+        public ExecuteWindowsBatch()
         {
-            return new Parameter[] {
-                new StringParameter("Command") { }
+            Name = "ExecuteWindowsBatch";
+        }
+
+        public override ParameterType[] GetSettingDefenitions()
+        {
+            return new ParameterType[] {
             };
         }
         public override void Action(string[] paramValues)

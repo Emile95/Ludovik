@@ -2,7 +2,7 @@
 
 namespace StandardPlugins
 {
-    public class StringParameter : Parameter
+    public class StringParameter : ParameterType
     {
         public StringParameter() : this("Default") { }
         public StringParameter(string Name, string DefaultValue = "")

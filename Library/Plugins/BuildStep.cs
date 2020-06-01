@@ -4,8 +4,9 @@ namespace Library.Plugins.BuildStep
 {
     public abstract class BuildStep : ISettable
     {
-        public virtual Parameter.Parameter[] GetSettingDefenitions() { return new Parameter.Parameter[] { }; }
-        public virtual Parameter.Parameter[] GetAdvancedSettingDefenitions() { return new Parameter.Parameter[] { }; }
+        public string Name { get; protected set; }
+        public virtual ParameterType.ParameterType[] GetSettingDefenitions() { return new ParameterType.ParameterType[] { }; }
+        public virtual ParameterType.ParameterType[] GetAdvancedSettingDefenitions() { return new ParameterType.ParameterType[] { }; }
         public abstract void Action(string[] paramValues);
     }
 }

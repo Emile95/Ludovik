@@ -2,7 +2,7 @@
 
 namespace StandardPlugins
 {
-    public class BooleanParameter : Parameter
+    public class BooleanParameter : ParameterType
     {
         public BooleanParameter() : this("Default") {}
 

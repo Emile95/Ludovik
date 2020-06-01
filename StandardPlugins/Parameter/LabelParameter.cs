@@ -3,7 +3,7 @@ using System.IO;
 
 namespace StandardPlugins
 {
-    public class LabelParameter : Parameter
+    public class LabelParameter : ParameterType
     {
         public LabelParameter() : this("Default") { }
         public LabelParameter(string Name, string DefaultValue = "master")

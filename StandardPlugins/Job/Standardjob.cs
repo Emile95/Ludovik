@@ -9,11 +9,9 @@ namespace StandardPlugins
         {
 
         }
-        public sealed override Parameter[] GetSettingDefenitions() 
+        public sealed override ParameterType[] GetSettingDefenitions() 
         {
-            return new Parameter[] {
-                new StringParameter("Name"),
-                new StringParameter("Description")
+            return new ParameterType[] {
             }; 
         }
     }
