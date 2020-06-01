@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Library;
-using Library.Plugins.BuildStep;
-using Library.Plugins.Job;
-using Library.Plugins.ParameterType;
 
 namespace App
 {
@@ -62,6 +58,7 @@ namespace App
                 string[] pluginPaths = Directory.GetFiles("F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins", "*.*", SearchOption.AllDirectories)
                     .Where(s => s.EndsWith(".dll")).ToArray();
 
+                /*
                 //Load Implmentation of ParameterType
                 List<ParameterType> parameterTypes = pluginPaths.SelectMany(pluginPath =>
                 {
@@ -77,9 +74,8 @@ namespace App
                 }).ToList();
 
                 PluginStorage.ParameterTypes.AddRange(parameterTypes);
-                PluginStorage.BuildSteps.AddRange(buildSteps);
+                PluginStorage.BuildSteps.AddRange(buildSteps);*/
 
-                Console.WriteLine(parameterTypes[1].VerifyValue("ExecuteWindowsBatch"));
             }
             catch (Exception ex)
             {

@@ -1,11 +1,10 @@
-﻿using Library.Interface.ISettable;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : ISettable
+    class Job
     {
-        public virtual ParameterType.ParameterType[] GetSettingDefenitions() { return new ParameterType.ParameterType[] { }; }
-        public virtual ParameterType.ParameterType[] GetAdvancedSettingDefenitions() { return new ParameterType.ParameterType[] { }; }
-        public Section[] Sections { get; protected set;}
     }
 }
