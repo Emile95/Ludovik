@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Library.Plugins.Job;
+using Library.StandardImplementation.StandardJob;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,26 +57,20 @@ namespace App
             try
             {
                 //Path of implementention of Plugins
-                string[] pluginPaths = Directory.GetFiles("F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins", "*.*", SearchOption.AllDirectories)
+                /*string[] pluginPaths = Directory.GetFiles("F:\\Prog\\Ludovik\\App\\App\\bin\\Debug\\netcoreapp3.1\\plugins", "*.*", SearchOption.AllDirectories)
                     .Where(s => s.EndsWith(".dll")).ToArray();
 
-                /*
+                
                 //Load Implmentation of ParameterType
-                List<ParameterType> parameterTypes = pluginPaths.SelectMany(pluginPath =>
+                List<Job> parameterTypes = pluginPaths.SelectMany(pluginPath =>
                 {
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
-                    return CreatePlugins<ParameterType>(pluginAssembly);
-                }).ToList();
+                    return CreatePlugins<Job>(pluginAssembly);
+                }).ToList();*/
 
-                //Load Implmentation of BuildStep
-                List<BuildStep> buildSteps = pluginPaths.SelectMany(pluginPath =>
-                {
-                    Assembly pluginAssembly = LoadPlugin(pluginPath);
-                    return CreatePlugins<BuildStep>(pluginAssembly);
-                }).ToList();
-
-                PluginStorage.ParameterTypes.AddRange(parameterTypes);
-                PluginStorage.BuildSteps.AddRange(buildSteps);*/
+                StandardJob job = new StandardJob();
+                job.LoadConfig("jobs", "job1");
+                Console.WriteLine(job.Description);
 
             }
             catch (Exception ex)
