@@ -69,8 +69,8 @@ namespace App
                 }).ToList();*/
 
                 StandardJob job = new StandardJob();
-                job.LoadConfig("jobs", "job1");
-                Console.WriteLine(job.Description);
+                job.LoadFromConfig("jobs", "job1");
+                Console.WriteLine(job.Name);
 
             }
             catch (Exception ex)

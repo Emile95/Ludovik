@@ -4,11 +4,11 @@ using System.IO;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : IConfigurable
+    public abstract class Job : IUserItem
     {
         public string Name { get; protected set; }
         public string Description {  get; protected set; }
-        public virtual void LoadConfig(string path, string folderName)
+        public virtual void LoadFromConfig(string path, string folderName)
         {
             //Config.json object
             string configFile = File.ReadAllText(path + "\\" + folderName + "\\config.json");
