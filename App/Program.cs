@@ -1,11 +1,13 @@
 ﻿using Library.Class;
 using Library.Plugins.Job;
 using Library.Plugins.Logger;
+using Library.Plugins.Node;
 using Library.Plugins.ParameterDefinition;
 using Library.StandardImplementation.BoolParameterDefinition;
 using Library.StandardImplementation.LabelParameterDefinition;
 using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
+using Library.StandardImplementation.StandardNode;
 using Library.StandardImplementation.StringParameterDefinition;
 using System;
 using System.Collections.Generic;
@@ -74,14 +76,24 @@ namespace App
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
-
+                /*
                 Job job = new StandardJob();
                 job.LoadFromFolder("jobs", "job");
 
                 LoggerList loggers = new LoggerList();
                 loggers.AddLogger(new StandardLogger());
 
-                job.Run(loggers);
+                job.Run(loggers);*/
+
+                
+                Config config = new Config();
+                config.AddParameter("hihoho", new StringParameterDefinition("name","Name of this node"));
+                config.AddParameter("standard node", new StringParameterDefinition("description", "Description of this node"));
+                config.AddParameter(".netcore java", new StringParameterDefinition("labels", "Labels attach to this node"));
+
+                Node node = new StandardNode();
+                node.LoadFromConfig(config);
+                node.CreateRepository("nodes");
             }
             catch (Exception ex)
             {
