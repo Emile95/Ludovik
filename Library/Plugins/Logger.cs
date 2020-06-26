@@ -1,11 +1,12 @@
 ﻿using Library.Class;
-using System;
 
 namespace Library.Plugins.Logger
 {
     public abstract class Logger
     {
         protected string[] _filePaths;
+
+        protected abstract string GetLogLine(Log log);
 
         public void Log(Log log)
         {
@@ -14,7 +15,7 @@ namespace Library.Plugins.Logger
                 using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(logPath, true))
                 {
-                    file.WriteLine("|" + log.LogType + "| " +DateTime.Now + " : " + log.Message);
+                    file.WriteLine(GetLogLine(log));
                 }
             }
         }
