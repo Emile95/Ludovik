@@ -3,12 +3,17 @@ using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Reflection.Emit;
 
 namespace Library.StandardImplementation.StandardJob
 {
     public class StandardJob : Job
     {
-        public string Label { get; private set; }
+        #region Properties
+
+        public string Label { get; set; }
+
+        #endregion
 
         #region ILoadable implementation
 
@@ -42,6 +47,13 @@ namespace Library.StandardImplementation.StandardJob
 
         }
 
+        public sealed override void LoadFromConfig(Config config)
+        {
+            Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
+            Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
+            Label = config.GetParameterValue<LabelParameterDefinition.LabelParameterDefinition>("label");
+        }
+
         #endregion
 
         #region AsbtractBuild implementation
@@ -59,6 +71,34 @@ namespace Library.StandardImplementation.StandardJob
         public sealed override void AfterBuild(Build build, Logger logger)
         {
             logger.Log("the job " + Name + " has finish to run");
+        }
+
+        #endregion
+
+        #region IRepositoryImplementation
+
+        public sealed override void CreateRepository(string path)
+        {
+            base.CreateRepository(path);
+
+            string dirPath = path + "\\" + Name;
+
+            //Create Config File
+            string jsonStr = "{\n";
+            jsonStr += "\t" + "\"description\":" + "\"" +Description + "\"" + "\n";
+            jsonStr += "\t" + "\"label\":" + "\"" + Label + "\"" + "\n";
+            jsonStr += "}";
+
+            string configFile = dirPath + "\\config.json";
+
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(File.Create(configFile)))
+            {
+                file.WriteLine(jsonStr);
+            }
+
+            //Create Builds Directory
+            Directory.CreateDirectory(dirPath+"\\builds");
         }
 
         #endregion

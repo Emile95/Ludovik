@@ -6,13 +6,13 @@ using System.IO;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : IBuildable, ILoadable, IConfigurable, IRunnable
+    public abstract class Job : IBuildable, ILoadable, IConfigurable, IRunnable, IRepository
     {
         #region Properties
 
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
-        public string Description {  get; protected set; }
+        public string Description {  get; set; }
 
         #endregion
 
@@ -52,12 +52,16 @@ namespace Library.Plugins.Job
 
         public abstract void SaveConfig(Config config);
 
+        public abstract void LoadFromConfig(Config config);
+
         #endregion
 
         #region IBuildable Implementation
 
         public virtual void PreBuild(Build build, Logger.Logger logger) { }
+
         public virtual void Build(Build build, Logger.Logger logger) { }
+
         public virtual void AfterBuild(Build build, Logger.Logger logger) { }
 
         #endregion
@@ -67,10 +71,19 @@ namespace Library.Plugins.Job
         public void Run(Logger.Logger logger)
         {
             Build build = new Build(1,"#1","");
-            build.CreateRepository("jobs\\"+Name+ "\\builds");
+            build.CreateRepository("jobs\\"+Name+"\\builds");
             PreBuild(build,logger);
             Build(build,logger);
             AfterBuild(build,logger);
+        }
+
+        #endregion
+
+        #region IRepository Implementation
+
+        public virtual void CreateRepository(string path)
+        {
+            Directory.CreateDirectory(path+"\\"+Name);
         }
 
         #endregion
