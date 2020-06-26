@@ -1,8 +1,10 @@
 ﻿using Library.Plugins.Job;
+using Library.Plugins.Logger;
 using Library.Plugins.ParameterDefinition;
 using Library.StandardImplementation.BoolParameterDefinition;
 using Library.StandardImplementation.LabelParameterDefinition;
 using Library.StandardImplementation.StandardJob;
+using Library.StandardImplementation.StandardLogger;
 using Library.StandardImplementation.StringParameterDefinition;
 using System;
 using System.Collections.Generic;
@@ -71,6 +73,9 @@ namespace App
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
+
+                Logger logger = new StandardLogger();
+                logger.Log("standard", "Hihihihoho");
 
             }
             catch (Exception ex)
