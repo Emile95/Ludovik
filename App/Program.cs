@@ -77,8 +77,6 @@ namespace App
                 Job job = new StandardJob();
                 job.LoadFromFolder("jobs","job1");
 
-                job.GetConfig().ValidateParams(new StandardLogger());
-
             }
             catch (Exception ex)
             {

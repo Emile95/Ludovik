@@ -1,5 +1,6 @@
 ﻿using Library.Class;
 using Library.Plugins.Job;
+using Library.Plugins.Logger;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
@@ -8,6 +9,8 @@ namespace Library.StandardImplementation.StandardJob
     public class StandardJob : Job
     {
         public string Label { get; private set; }
+
+        #region ILoadable implementation
 
         public sealed override void LoadFromFolder(string path, string folderName)
         {
@@ -18,6 +21,10 @@ namespace Library.StandardImplementation.StandardJob
 
             Label = configFileObject.Value<string>("label");
         }
+
+        #endregion
+
+        #region IConfigurable implementation
 
         public sealed override Config GetConfig()
         {
@@ -32,7 +39,28 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override void SaveConfig(Config config)
         {
+
+        }
+
+        #endregion
+
+        #region AsbtractBuild implementation
+
+        public sealed override void PreBuild(Logger logger)
+        {
+
+        }
+
+        public sealed override void Build(Logger logger)
+        {
             
         }
+
+        public sealed override void AfterBuild(Logger logger)
+        {
+            
+        }
+
+        #endregion
     }
 }

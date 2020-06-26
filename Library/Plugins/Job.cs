@@ -6,11 +6,17 @@ using System.IO;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : ILoadable, IConfigurable
+    public abstract class Job : IBuildable, ILoadable, IConfigurable
     {
+        #region Properties
+
         public string Name { get; protected set; }
 
         public string Description {  get; protected set; }
+
+        #endregion
+
+        #region ILoadable implementation
 
         public virtual void LoadFromFolder(string path, string folderName)
         {
@@ -21,6 +27,10 @@ namespace Library.Plugins.Job
             Name = folderName;
             Description = configFileObject.Value<string>("description");
         }
+
+        #endregion
+
+        #region IConfigurable implementation
 
         public virtual Config GetConfig()
         {
@@ -41,5 +51,15 @@ namespace Library.Plugins.Job
         }
 
         public abstract void SaveConfig(Config config);
+
+        #endregion
+
+        #region IBuildable Implementation
+
+        public virtual void PreBuild(Logger.Logger logger) { }
+        public virtual void Build(Logger.Logger logger) { }
+        public virtual void AfterBuild(Logger.Logger logger) { }
+
+        #endregion
     }
 }
