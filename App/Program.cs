@@ -76,6 +76,7 @@ namespace App
 
                 Job job = new StandardJob();
                 job.LoadFromFolder("jobs","job1");
+                job.Run(new StandardLogger());
 
             }
             catch (Exception ex)

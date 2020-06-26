@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : IBuildable, ILoadable, IConfigurable
+    public abstract class Job : IBuildable, ILoadable, IConfigurable, IRunnable
     {
         #region Properties
 
@@ -59,6 +59,17 @@ namespace Library.Plugins.Job
         public virtual void PreBuild(Logger.Logger logger) { }
         public virtual void Build(Logger.Logger logger) { }
         public virtual void AfterBuild(Logger.Logger logger) { }
+
+        #endregion
+
+        #region IRunnable Implementation
+
+        public void Run(Logger.Logger logger)
+        {
+            PreBuild(logger);
+            Build(logger);
+            AfterBuild(logger);
+        }
 
         #endregion
     }

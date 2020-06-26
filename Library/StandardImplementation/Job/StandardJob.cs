@@ -3,6 +3,7 @@ using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
 {
@@ -48,7 +49,7 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override void PreBuild(Logger logger)
         {
-
+            
         }
 
         public sealed override void Build(Logger logger)
@@ -58,7 +59,7 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override void AfterBuild(Logger logger)
         {
-            
+            logger.Log("the job " + Name + " has finish to run");
         }
 
         #endregion
