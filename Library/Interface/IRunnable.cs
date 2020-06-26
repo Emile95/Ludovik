@@ -1,9 +1,9 @@
-﻿using Library.Plugins.Logger;
+﻿using Library.Class;
 
 namespace Library.Interface
 {
     public interface IRunnable
     {
-        void Run(Logger logger = null);
+        void Run(LoggerList loggers = null);
     }
 }

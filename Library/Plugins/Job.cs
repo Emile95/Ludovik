@@ -58,23 +58,23 @@ namespace Library.Plugins.Job
 
         #region IBuildable Implementation
 
-        public virtual void PreBuild(Build build, Logger.Logger logger) { }
+        public virtual void PreBuild(Build build, LoggerList loggers) { }
 
-        public virtual void Build(Build build, Logger.Logger logger) { }
+        public virtual void Build(Build build, LoggerList loggers) { }
 
-        public virtual void AfterBuild(Build build, Logger.Logger logger) { }
+        public virtual void AfterBuild(Build build, LoggerList loggers) { }
 
         #endregion
 
         #region IRunnable Implementation
 
-        public void Run(Logger.Logger logger)
+        public void Run(LoggerList loggers)
         {
             Build build = new Build(1,"#1","");
             build.CreateRepository("jobs\\"+Name+"\\builds");
-            PreBuild(build,logger);
-            Build(build,logger);
-            AfterBuild(build,logger);
+            PreBuild(build, loggers);
+            Build(build, loggers);
+            AfterBuild(build, loggers);
         }
 
         #endregion

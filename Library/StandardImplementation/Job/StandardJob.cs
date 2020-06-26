@@ -1,6 +1,5 @@
 ﻿using Library.Class;
 using Library.Plugins.Job;
-using Library.Plugins.Logger;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
@@ -57,19 +56,20 @@ namespace Library.StandardImplementation.StandardJob
 
         #region AsbtractBuild implementation
 
-        public sealed override void PreBuild(Build build, Logger logger)
+        public sealed override void PreBuild(Build build, LoggerList loggers)
         {
             
         }
 
-        public sealed override void Build(Build build, Logger logger)
+        public sealed override void Build(Build build, LoggerList loggers)
         {
             
         }
 
-        public sealed override void AfterBuild(Build build, Logger logger)
+        public sealed override void AfterBuild(Build build, LoggerList loggers)
         {
-            logger.Log(new Log("the job " + Name + " has finish to run", Log.Type.Info));
+            loggers.GetLogger<StandardLogger.StandardLogger>()
+                .Log(new Log("the job " + Name + " has finish to run", Log.Type.Info));
         }
 
         #endregion

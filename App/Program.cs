@@ -76,9 +76,12 @@ namespace App
                 }).ToList();*/
 
                 Job job = new StandardJob();
-                job.LoadFromFolder("jobs","job");
+                job.LoadFromFolder("jobs", "job");
 
-                job.Run(new StandardLogger());
+                LoggerList loggers = new LoggerList();
+                loggers.AddLogger(new StandardLogger());
+
+                job.Run(loggers);
             }
             catch (Exception ex)
             {
