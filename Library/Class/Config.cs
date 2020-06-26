@@ -19,5 +19,15 @@ namespace Library.Class
                 value
             ));
         }
+
+        public bool ValidateParams()
+        {
+            foreach(System.Tuple<ParameterDefinition, string> param in _params )
+            {
+                if (!param.Item1.VerifyValue(param.Item2))
+                    return false;
+            }
+            return true;
+        }
     }
 }
