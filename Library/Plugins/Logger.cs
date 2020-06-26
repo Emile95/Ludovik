@@ -14,7 +14,7 @@ namespace Library.Plugins.Logger
                 using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(logPath, true))
                 {
-                    file.WriteLine(DateTime.Now + " : " + "|" + log.LogType + "| " + log.Message);
+                    file.WriteLine("|" + log.LogType + "| " +DateTime.Now + " : " + log.Message);
                 }
             }
         }
