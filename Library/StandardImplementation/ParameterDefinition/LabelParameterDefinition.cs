@@ -16,7 +16,6 @@ namespace Library.StandardImplementation.LabelParameterDefinition
         {
             if(!Directory.Exists("nodes\\" + value))
             {
-                logger?.Log("The Label " + value + "do not exist");
                 return false;
             }
             return true;

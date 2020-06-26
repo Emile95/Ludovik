@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Library.Class;
+using System;
 
 namespace Library.Plugins.Logger
 {
     public abstract class Logger
     {
-        protected string[] _logPaths;
+        protected string[] _filePaths;
 
-        public void Log(string message)
+        public void Log(Log log)
         {
-            foreach(string logPath in _logPaths)
+            foreach(string logPath in _filePaths)
             {
                 using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(logPath, true))
                 {
-                    file.WriteLine(DateTime.Now + " : " + message);
+                    file.WriteLine(DateTime.Now + " : " + "|" + log.LogType + "| " + log.Message);
                 }
             }
         }

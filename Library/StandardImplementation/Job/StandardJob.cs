@@ -69,7 +69,7 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override void AfterBuild(Build build, Logger logger)
         {
-            logger.Log("the job " + Name + " has finish to run");
+            logger.Log(new Log("the job " + Name + " has finish to run", Log.Type.Info));
         }
 
         #endregion
