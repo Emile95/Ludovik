@@ -2,6 +2,6 @@
 {
     public interface IRepository
     {
-        void CreateRepository();
+        void CreateRepository(string path);
     }
 }

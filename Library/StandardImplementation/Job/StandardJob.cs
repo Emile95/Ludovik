@@ -3,7 +3,6 @@ using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
 {
