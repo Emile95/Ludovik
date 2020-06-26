@@ -46,17 +46,17 @@ namespace Library.StandardImplementation.StandardJob
 
         #region AsbtractBuild implementation
 
-        public sealed override void PreBuild(Logger logger)
+        public sealed override void PreBuild(Build build, Logger logger)
         {
             
         }
 
-        public sealed override void Build(Logger logger)
+        public sealed override void Build(Build build, Logger logger)
         {
             
         }
 
-        public sealed override void AfterBuild(Logger logger)
+        public sealed override void AfterBuild(Build build, Logger logger)
         {
             logger.Log("the job " + Name + " has finish to run");
         }

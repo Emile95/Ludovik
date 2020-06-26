@@ -1,11 +1,12 @@
-﻿using Library.Plugins.Logger;
+﻿using Library.Class;
+using Library.Plugins.Logger;
 
 namespace Library.Interface
 {
     public interface IBuildable
     {
-        void PreBuild(Logger logger);
-        void Build(Logger logger);
-        void AfterBuild(Logger logger);
+        void PreBuild(Build build, Logger logger);
+        void Build(Build build, Logger logger);
+        void AfterBuild(Build build, Logger logger);
     }
 }

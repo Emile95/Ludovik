@@ -79,9 +79,6 @@ namespace App
                 job.LoadFromFolder("jobs","job1");
                 job.Run(new StandardLogger());
 
-                Build build = new Build(1,"orion","prelude");
-                build.CreateRepository("jobs\\job1\\builds");
-
             }
             catch (Exception ex)
             {

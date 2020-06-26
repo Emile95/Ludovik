@@ -56,9 +56,9 @@ namespace Library.Plugins.Job
 
         #region IBuildable Implementation
 
-        public virtual void PreBuild(Logger.Logger logger) { }
-        public virtual void Build(Logger.Logger logger) { }
-        public virtual void AfterBuild(Logger.Logger logger) { }
+        public virtual void PreBuild(Build build, Logger.Logger logger) { }
+        public virtual void Build(Build build, Logger.Logger logger) { }
+        public virtual void AfterBuild(Build build, Logger.Logger logger) { }
 
         #endregion
 
@@ -66,9 +66,11 @@ namespace Library.Plugins.Job
 
         public void Run(Logger.Logger logger)
         {
-            PreBuild(logger);
-            Build(logger);
-            AfterBuild(logger);
+            Build build = new Build(1,"#1","");
+            build.CreateRepository("jobs\\"+Name+ "\\builds");
+            PreBuild(build,logger);
+            Build(build,logger);
+            AfterBuild(build,logger);
         }
 
         #endregion
