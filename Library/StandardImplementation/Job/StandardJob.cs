@@ -12,7 +12,7 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override Config GetConfig()
         {
-            return null;
+            return base.GetConfig();
         }
 
         public sealed override void SaveConfig(Config config)

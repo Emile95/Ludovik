@@ -72,10 +72,6 @@ namespace App
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
 
-                ParameterDefinition def = new LabelParameterDefinition();
-                
-                Console.WriteLine(def.VerifyValue("123"));
-
             }
             catch (Exception ex)
             {

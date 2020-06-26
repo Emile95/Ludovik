@@ -1,5 +1,6 @@
 ﻿using Library.Class;
 using Library.Interface;
+using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
@@ -21,7 +22,23 @@ namespace Library.Plugins.Job
             Description = configFileObject.Value<string>("description");
         }
 
-        public abstract Config GetConfig();
+        public virtual Config GetConfig()
+        {
+            string configFile = File.ReadAllText("jobs\\"+Name + "\\config.json");
+            JObject configFileObject = JObject.Parse(configFile);
+
+            Config config = new Config();
+            config.AddParameter(
+                Name,
+                new StringParameterDefinition("Name","Name of this job")
+            );
+            config.AddParameter(
+                configFileObject.Value<string>("description"),
+                new StringParameterDefinition("Description", "Description of this job")
+            );
+
+            return config;
+        }
 
         public abstract void SaveConfig(Config config);
     }
