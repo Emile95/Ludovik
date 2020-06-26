@@ -75,14 +75,10 @@ namespace App
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
 
-                Config jobConfig = new Config();
-                jobConfig.AddParameter("job", new StringParameterDefinition("name","Name of this job"));
-                jobConfig.AddParameter("Example of an job", new StringParameterDefinition("description", "Description of this job"));
-                jobConfig.AddParameter("slave", new LabelParameterDefinition("label", "Label where to run this job"));
-
                 Job job = new StandardJob();
-                job.LoadFromConfig(jobConfig);
-                job.CreateRepository("jobs");
+                job.LoadFromFolder("jobs","job");
+
+                job.Run(new StandardLogger());
             }
             catch (Exception ex)
             {

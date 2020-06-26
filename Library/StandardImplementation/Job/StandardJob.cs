@@ -3,7 +3,6 @@ using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using System.Reflection.Emit;
 
 namespace Library.StandardImplementation.StandardJob
 {
@@ -85,7 +84,7 @@ namespace Library.StandardImplementation.StandardJob
 
             //Create Config File
             string jsonStr = "{\n";
-            jsonStr += "\t" + "\"description\":" + "\"" +Description + "\"" + "\n";
+            jsonStr += "\t" + "\"description\":" + "\"" +Description + "\"," + "\n";
             jsonStr += "\t" + "\"label\":" + "\"" + Label + "\"" + "\n";
             jsonStr += "}";
 
