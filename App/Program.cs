@@ -74,8 +74,10 @@ namespace App
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
 
-                Logger logger = new StandardLogger();
-                logger.Log("CarlaHomolka");
+                Job job = new StandardJob();
+                job.LoadFromFolder("jobs","job1");
+
+                job.GetConfig().ValidateParams(new StandardLogger());
 
             }
             catch (Exception ex)

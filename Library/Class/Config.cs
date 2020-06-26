@@ -1,4 +1,5 @@
-﻿using Library.Plugins.ParameterDefinition;
+﻿using Library.Plugins.Logger;
+using Library.Plugins.ParameterDefinition;
 using System.Collections.Generic;
 
 namespace Library.Class
@@ -20,12 +21,14 @@ namespace Library.Class
             ));
         }
 
-        public bool ValidateParams()
+        public bool ValidateParams(Logger logger = null)
         {
             foreach(System.Tuple<ParameterDefinition, string> param in _params )
             {
-                if (!param.Item1.VerifyValue(param.Item2))
+                if (!param.Item1.VerifyValue(param.Item2, logger))
+                {
                     return false;
+                }
             }
             return true;
         }

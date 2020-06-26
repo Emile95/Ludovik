@@ -6,7 +6,7 @@ namespace Library.StandardImplementation.StandardLogger
     {
         public StandardLogger()
         {
-            LogPaths = new string[] {
+            _logPaths = new string[] {
                 "logs\\standard.log"
             };
         }

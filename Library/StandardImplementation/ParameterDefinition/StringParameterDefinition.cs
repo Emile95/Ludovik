@@ -1,4 +1,5 @@
-﻿using Library.Plugins.ParameterDefinition;
+﻿using Library.Plugins.Logger;
+using Library.Plugins.ParameterDefinition;
 
 namespace Library.StandardImplementation.StringParameterDefinition
 {
@@ -10,7 +11,7 @@ namespace Library.StandardImplementation.StringParameterDefinition
             Description = description;
         }
 
-        public sealed override bool VerifyValue(string value)
+        public sealed override bool VerifyValue(string value, Logger logger)
         {
             return true;
         }

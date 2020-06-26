@@ -5,14 +5,14 @@ namespace Library.Plugins.Logger
 {
     public abstract class Logger
     {
-        public string[]  LogPaths { get; protected set; }
+        protected string[] _logPaths;
 
         public void Log(string message)
         {
-            foreach(string LogPath in LogPaths)
+            foreach(string logPath in _logPaths)
             {
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(LogPath, true))
+                new System.IO.StreamWriter(logPath, true))
                 {
                     file.WriteLine(DateTime.Now + " : " + message);
                 }
