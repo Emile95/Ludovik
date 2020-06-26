@@ -75,7 +75,7 @@ namespace App
                 }).ToList();*/
 
                 Logger logger = new StandardLogger();
-                logger.Log("standard", "Hihihihoho");
+                logger.Log("CarlaHomolka");
 
             }
             catch (Exception ex)

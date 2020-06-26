@@ -6,8 +6,9 @@ namespace Library.StandardImplementation.StandardLogger
     {
         public StandardLogger()
         {
-            LogPaths = new System.Collections.Generic.Dictionary<string, string>();
-            LogPaths["standard"] = "logs\\standard.log";
+            LogPaths = new string[] {
+                "logs\\standard.log"
+            };
         }
     }
 }
