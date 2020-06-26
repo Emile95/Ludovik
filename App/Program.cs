@@ -1,5 +1,9 @@
 ﻿using Library.Plugins.Job;
+using Library.Plugins.ParameterDefinition;
+using Library.StandardImplementation.BoolParameterDefinition;
+using Library.StandardImplementation.LabelParameterDefinition;
 using Library.StandardImplementation.StandardJob;
+using Library.StandardImplementation.StringParameterDefinition;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,9 +72,9 @@ namespace App
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
 
-                StandardJob job = new StandardJob();
-                job.LoadFromConfig("jobs", "job1");
-                Console.WriteLine(job.Name);
+                ParameterDefinition def = new LabelParameterDefinition();
+                
+                Console.WriteLine(def.VerifyValue("123"));
 
             }
             catch (Exception ex)
