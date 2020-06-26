@@ -4,19 +4,16 @@ namespace Library.Plugins.Logger
 {
     public abstract class Logger
     {
-        protected string[] _filePaths;
+        protected abstract string GetFilePath();
 
         protected abstract string GetLogLine(Log log);
 
-        public void Log(Log log)
+        public void Log(Log log, string partialPath = null)
         {
-            foreach(string logPath in _filePaths)
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(GetFilePath(), true))
             {
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(logPath, true))
-                {
-                    file.WriteLine(GetLogLine(log));
-                }
+                file.WriteLine(GetLogLine(log));
             }
         }
     }

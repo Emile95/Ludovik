@@ -1,5 +1,6 @@
 ﻿using Library.Class;
 using Library.Interface;
+using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -72,6 +73,9 @@ namespace Library.Plugins.Job
         {
             Build build = new Build(1,"#1","");
             build.CreateRepository("jobs\\"+Name+"\\builds");
+
+            loggers.AddLogger(new JobBuildLogger(Name,build.Number));
+
             PreBuild(build, loggers);
             Build(build, loggers);
             AfterBuild(build, loggers);

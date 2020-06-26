@@ -6,16 +6,14 @@ namespace Library.StandardImplementation.StandardLogger
 {
     public class StandardLogger : Logger
     {
+        protected sealed override string GetFilePath()
+        {
+            return "logs\\standard.log";
+        }
+
         protected sealed override string GetLogLine(Log log)
         {
             return "|" + log.LogType + "| " + DateTime.Now + " : " + log.Message;
-        }
-
-        public StandardLogger()
-        {
-            _filePaths = new string[] {
-                "logs\\standard.log"
-            };
         }
     }
 }

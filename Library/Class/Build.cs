@@ -20,7 +20,7 @@ namespace Library.Class
         {
             string dir = path + "\\" + Number.ToString();
             Directory.CreateDirectory(dir);
-            File.Create(dir+"\\console.log");
+            File.Create(dir+"\\console.log").Close();
         }
     }
 }

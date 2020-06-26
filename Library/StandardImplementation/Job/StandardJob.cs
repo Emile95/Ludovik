@@ -1,6 +1,7 @@
 ﻿using Library.Class;
 using Library.Plugins.Job;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 
 namespace Library.StandardImplementation.StandardJob
@@ -58,7 +59,8 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override void PreBuild(Build build, LoggerList loggers)
         {
-            
+            loggers.GetLogger<JobBuildLogger.JobBuildLogger>()
+                .Log(new Log("Job start at " + DateTime.Now));
         }
 
         public sealed override void Build(Build build, LoggerList loggers)
