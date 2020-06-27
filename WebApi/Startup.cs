@@ -1,8 +1,17 @@
-﻿using Application.JobApplication;
+using Application.JobApplication;
+using Library;
+using Library.StandardImplementation.BoolParameterDefinition;
+using Library.StandardImplementation.JobBuildLogger;
+using Library.StandardImplementation.LabelParameterDefinition;
+using Library.StandardImplementation.StandardJob;
+using Library.StandardImplementation.StandardLogger;
+using Library.StandardImplementation.StandardNode;
+using Library.StandardImplementation.StringParameterDefinition;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace WebApi
 {
@@ -18,27 +27,40 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
+            services.AddControllers();
 
             services.AddScoped<IJobApplication, JobApplication>();
 
-            services.AddMvc();
+            PluginStorage.AddJobPlugin(typeof(StandardJob));
+
+            PluginStorage.AddParameterDefinitionPlugin(typeof(StringParameterDefinition));
+            PluginStorage.AddParameterDefinitionPlugin(typeof(BoolParameterDefinition));
+            PluginStorage.AddParameterDefinitionPlugin(typeof(LabelParameterDefinition));
+
+            PluginStorage.AddLoggerlugin(typeof(StandardLogger));
+            PluginStorage.AddLoggerlugin(typeof(JobBuildLogger));
+
+            PluginStorage.AddNodePlugin(typeof(StandardNode));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Build();
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

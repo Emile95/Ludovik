@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi
 {
@@ -9,20 +13,14 @@ namespace WebApi
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
-			string ipAddtess = "http://localhost:5001/";
-            if(File.Exists(Environment.CurrentDirectory + "\\ipAddress.txt"))
-			    using (StreamReader sr = File.OpenText(Environment.CurrentDirectory+"\\ipAddress.txt"))
-			    {
-				    ipAddtess = sr.ReadLine();
-			    }
-			
-			return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseUrls(ipAddtess);
-		}
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

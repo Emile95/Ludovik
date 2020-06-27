@@ -79,16 +79,7 @@ namespace App
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
 
-                PluginStorage.AddJobPlugin(typeof(StandardJob));
-
-                PluginStorage.AddParameterDefinitionPlugin(typeof(StringParameterDefinition));
-                PluginStorage.AddParameterDefinitionPlugin(typeof(BoolParameterDefinition));
-                PluginStorage.AddParameterDefinitionPlugin(typeof(LabelParameterDefinition));
-
-                PluginStorage.AddLoggerlugin(typeof(StandardLogger));
-                PluginStorage.AddLoggerlugin(typeof(JobBuildLogger));
-
-                PluginStorage.AddNodePlugin(typeof(StandardNode));
+                
             }
             catch (Exception ex)
             {

@@ -1,7 +1,9 @@
-﻿namespace Application.JobApplication
+﻿using Application.JobApplication.PostModel;
+
+namespace Application.JobApplication
 {
     public interface IJobApplication
     {
-        void RunJob(string name);
+        void RunJob(JobRunSetting setting);
     }
 }

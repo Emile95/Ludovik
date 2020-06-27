@@ -1,7 +1,11 @@
-﻿using Library.Class;
+﻿using Application.JobApplication.PostModel;
+using Library;
+using Library.Class;
 using Library.Plugins.Job;
 using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Application.JobApplication
 {
@@ -9,11 +13,13 @@ namespace Application.JobApplication
     {
         #region IJobApplication Implementation
 
-        public void RunJob(string name)
+        public void RunJob(JobRunSetting setting)
         {
-            Job job = new StandardJob();
+            JObject jObject = JObject.Parse(File.ReadAllText("jobs\\" + setting.Name + "\\config.json"));
 
-            job.LoadFromFolder("jobs",name);
+            Job job = PluginStorage.CreateJob(jObject.Value<string>("_class"));
+
+            job.LoadFromFolder("jobs", setting.Name);
 
             LoggerList loggers = new LoggerList();
             loggers.AddLogger(new StandardLogger());

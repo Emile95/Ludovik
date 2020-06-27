@@ -1,16 +1,13 @@
 ﻿using Application.JobApplication;
-using Microsoft.AspNetCore.Cors;
+using Application.JobApplication.PostModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [EnableCors("MyPolicy")]
-    [Produces("application/json")]
+    [ApiController]
     [Route("job")]
-    public class JobController : Controller
+    public class JobController : ControllerBase
     {
-        #region Properties and Constructor
-
         private readonly IJobApplication _jobApplication;
 
         public JobController(
@@ -19,14 +16,17 @@ namespace WebApi.Controllers
         {
             _jobApplication = jobApplication;
         }
-        
-        #endregion
 
-        [HttpGet("run")]
-        public IActionResult RunJob()
+        [HttpGet("{name}/config")]
+        public IActionResult GetConfig(string name)
         {
-            throw new System.Exception("asdasd");
-            _jobApplication.RunJob("job");
+            return Ok();
+        }
+
+        [HttpPost("run")]
+        public IActionResult Run([FromBody] JobRunSetting setting)
+        {
+            _jobApplication.RunJob(setting);
             return Ok();
         }
     }
