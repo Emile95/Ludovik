@@ -1,9 +1,11 @@
-﻿using Library.Class;
+﻿using Library;
+using Library.Class;
 using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Library.Plugins.Node;
 using Library.Plugins.ParameterDefinition;
 using Library.StandardImplementation.BoolParameterDefinition;
+using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.LabelParameterDefinition;
 using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
@@ -76,24 +78,17 @@ namespace App
                     Assembly pluginAssembly = LoadPlugin(pluginPath);
                     return CreatePlugins<Job>(pluginAssembly);
                 }).ToList();*/
-                /*
-                Job job = new StandardJob();
-                job.LoadFromFolder("jobs", "job");
 
-                LoggerList loggers = new LoggerList();
-                loggers.AddLogger(new StandardLogger());
+                PluginStorage.AddJobPlugin(typeof(StandardJob));
 
-                job.Run(loggers);*/
+                PluginStorage.AddParameterDefinitionPlugin(typeof(StringParameterDefinition));
+                PluginStorage.AddParameterDefinitionPlugin(typeof(BoolParameterDefinition));
+                PluginStorage.AddParameterDefinitionPlugin(typeof(LabelParameterDefinition));
 
-                
-                Config config = new Config();
-                config.AddParameter("hihoho", new StringParameterDefinition("name","Name of this node"));
-                config.AddParameter("standard node", new StringParameterDefinition("description", "Description of this node"));
-                config.AddParameter(".netcore java", new StringParameterDefinition("labels", "Labels attach to this node"));
+                PluginStorage.AddLoggerlugin(typeof(StandardLogger));
+                PluginStorage.AddLoggerlugin(typeof(JobBuildLogger));
 
-                Node node = new StandardNode();
-                node.LoadFromConfig(config);
-                node.CreateRepository("nodes");
+                PluginStorage.AddNodePlugin(typeof(StandardNode));
             }
             catch (Exception ex)
             {

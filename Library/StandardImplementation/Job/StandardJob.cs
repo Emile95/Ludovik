@@ -86,6 +86,7 @@ namespace Library.StandardImplementation.StandardJob
 
             //Create Config File
             string jsonStr = "{\n";
+            jsonStr += "\t" + "\"_class\":" + "\"" + GetType().ToString() + "\"," + "\n";
             jsonStr += "\t" + "\"description\":" + "\"" +Description + "\"," + "\n";
             jsonStr += "\t" + "\"label\":" + "\"" + Label + "\"" + "\n";
             jsonStr += "}";
