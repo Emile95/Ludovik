@@ -6,8 +6,6 @@ namespace Library.Interface
     {
         Config GetConfig();
 
-        void SaveConfig(Config config);
-
-        void LoadFromConfig(Config config);
+        void LoadConfig(Config config);
     }
 }

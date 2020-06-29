@@ -1,7 +1,9 @@
 ﻿using Library.Class;
+using Library.Plugins;
 using Library.Plugins.Job;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -14,6 +16,11 @@ namespace Library.StandardImplementation.StandardJob
         public string Label { get; set; }
 
         #endregion
+
+        public StandardJob()
+        {
+            Properties = new List<Property>();
+        }
 
         #region Job implementation
 
@@ -50,6 +57,37 @@ namespace Library.StandardImplementation.StandardJob
 
         #endregion
 
+        #region IConvertable Implementation
+
+        public sealed override string ToJson(bool beautify, int nbTab = 0)
+        {
+            string depthTab = "";
+            for(int i = 0; i < nbTab; i++)
+            {
+                depthTab += "\t";
+            }
+
+            string jsonStr = depthTab+"{\n";
+            jsonStr += depthTab+"\t" + "\"_class\":" + "\"" + GetType().ToString() + "\"," + "\n";
+            jsonStr += depthTab+"\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
+            jsonStr += depthTab+"\t" + "\"label\":" + "\"" + Label + "\"," + "\n";
+
+            jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
+
+            Properties.ForEach(prop =>
+            {
+                jsonStr += prop.ToJson(true,nbTab+2);
+                jsonStr += ",\n";
+            });
+
+            jsonStr += depthTab + "\t]" + "\n";
+
+            jsonStr += "}";
+            return jsonStr;
+        }
+
+        #endregion
+
         #region IConfigurable implementation
 
         public sealed override Config GetConfig()
@@ -63,12 +101,7 @@ namespace Library.StandardImplementation.StandardJob
             return config;
         }
 
-        public sealed override void SaveConfig(Config config)
-        {
-
-        }
-
-        public sealed override void LoadFromConfig(Config config)
+        public sealed override void LoadConfig(Config config)
         {
             Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
             Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
@@ -85,19 +118,12 @@ namespace Library.StandardImplementation.StandardJob
 
             string dirPath = path + "\\" + Name;
 
-            //Create Config File
-            string jsonStr = "{\n";
-            jsonStr += "\t" + "\"_class\":" + "\"" + GetType().ToString() + "\"," + "\n";
-            jsonStr += "\t" + "\"description\":" + "\"" +Description + "\"," + "\n";
-            jsonStr += "\t" + "\"label\":" + "\"" + Label + "\"" + "\n";
-            jsonStr += "}";
-
             string configFile = dirPath + "\\config.json";
 
             using (System.IO.StreamWriter file =
                 new System.IO.StreamWriter(File.Create(configFile)))
             {
-                file.WriteLine(jsonStr);
+                file.WriteLine(ToJson(true));
             }
 
             //Create Builds Directory

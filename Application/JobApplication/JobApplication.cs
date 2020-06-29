@@ -1,12 +1,10 @@
 ﻿using Application.JobApplication.PostModel;
 using Application.SendedModel;
-using Application.ThreadApplication;
 using Library;
 using Library.Class;
 using Library.Plugins.Job;
 using Library.StandardImplementation.StandardLogger;
 using Newtonsoft.Json.Linq;
-using System;
 using System.IO;
 
 namespace Application.JobApplication

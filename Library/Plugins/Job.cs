@@ -4,12 +4,13 @@ using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : ILoadable, IConfigurable, IRunnable, IRepository
+    public abstract class Job : ILoadable, IConfigurable, IRunnable, IRepository, IConvertable
     {
         #region Properties
 
@@ -17,7 +18,7 @@ namespace Library.Plugins.Job
 
         public string Description { get; set; }
 
-        public Trigger[] Triggers { get; set; }
+        public List<Property> Properties { get; set; }
 
         #endregion
 
@@ -41,6 +42,13 @@ namespace Library.Plugins.Job
 
         #endregion
 
+
+        #region IConvertable
+
+        public abstract string ToJson(bool beautify, int nbTab = 0);
+
+        #endregion
+
         #region IConfigurable implementation
 
         public virtual Config GetConfig()
@@ -61,9 +69,7 @@ namespace Library.Plugins.Job
             return config;
         }
 
-        public abstract void SaveConfig(Config config);
-
-        public abstract void LoadFromConfig(Config config);
+        public abstract void LoadConfig(Config config);
 
         #endregion
 

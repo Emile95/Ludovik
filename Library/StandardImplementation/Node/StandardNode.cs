@@ -8,7 +8,7 @@ namespace Library.StandardImplementation.StandardNode
     {
         #region IConfigurable Implementation
 
-        public override void LoadFromConfig(Config config)
+        public override void LoadConfig(Config config)
         {
             Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
             Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");

@@ -55,7 +55,7 @@ namespace Library.Plugins.Node
 
         public abstract void SaveConfig(Config config);
 
-        public abstract void LoadFromConfig(Config config);
+        public abstract void LoadConfig(Config config);
 
         #endregion
 
