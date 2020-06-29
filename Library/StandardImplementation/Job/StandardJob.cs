@@ -76,7 +76,7 @@ namespace Library.StandardImplementation.StandardJob
 
         #endregion
 
-        #region IRepositoryImplementation
+        #region IRepository Implementation
 
         public sealed override void CreateRepository(string path)
         {

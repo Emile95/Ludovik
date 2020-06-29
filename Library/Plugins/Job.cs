@@ -13,7 +13,9 @@ namespace Library.Plugins.Job
 
         public string Name { get; set; }
 
-        public string Description {  get; set; }
+        public string Description { get; set; }
+
+        public Trigger[] Triggers { get; set; }
 
         #endregion
 
@@ -91,5 +93,6 @@ namespace Library.Plugins.Job
         }
 
         #endregion
+
     }
 }

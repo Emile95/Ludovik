@@ -1,4 +1,5 @@
 using Application.JobApplication;
+using Application.ThreadApplication;
 using Library;
 using Library.StandardImplementation.BoolParameterDefinition;
 using Library.StandardImplementation.JobBuildLogger;
@@ -29,6 +30,7 @@ namespace WebApi
         {
             services.AddControllers();
 
+            services.AddScoped<IThreadApplication, ThreadApplication>();
             services.AddScoped<IJobApplication, JobApplication>();
 
             PluginStorage.AddJobPlugin(typeof(StandardJob));
