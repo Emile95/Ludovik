@@ -44,7 +44,7 @@ namespace Application.ThreadApplication
             _intervals.Remove(key);
         }
 
-        public async void AddRun(string key, IRunnable runner, LoggerList loggers)
+        public void AddRun(string key, IRunnable runner, LoggerList loggers)
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -53,23 +53,25 @@ namespace Application.ThreadApplication
 
             Task task = Task.Run(() =>
             {
-                runner.Run(loggers);
+                try
+                {
+                    runner.Run(tokenSource.Token, loggers);
+                }
+                catch (OperationCanceledException e) { }
+                finally
+                {
+                    tokenSource.Dispose();
+                }
+
                 _runs.Remove(key);
                 _tokens.Remove(key);
-                RemoveInterval(key);
-            }, tokenSource.Token);
 
-            try
-            {
-                await task;
-            } catch(Exception e) { }
+            }, tokenSource.Token);
         }
 
         public void CancelRun(string key)
         {
             _tokens[key].Cancel();
-            _tokens[key].Dispose();
-            RemoveInterval(key);
             _tokens.Remove(key);
             _runs.Remove(key);
         }

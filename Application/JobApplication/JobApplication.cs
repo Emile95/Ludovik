@@ -6,6 +6,7 @@ using Library.Class;
 using Library.Plugins.Job;
 using Library.StandardImplementation.StandardLogger;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 
 namespace Application.JobApplication
@@ -19,8 +20,6 @@ namespace Application.JobApplication
         )
         {
             _threadApplication = threadApplication;
-
-            //_threadApplication.AddInterval("job#1", 2000, () => RunJob(new JobRunSetting() { Name = "job" }));
         }
 
         #region IJobApplication Implementation

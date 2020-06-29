@@ -3,6 +3,7 @@ using Library.Plugins.Job;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
 {
@@ -11,6 +12,27 @@ namespace Library.StandardImplementation.StandardJob
         #region Properties
 
         public string Label { get; set; }
+
+        #endregion
+
+        #region Job implementation
+
+        public sealed override void PreBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers)
+        {
+            loggers.GetLogger<JobBuildLogger.JobBuildLogger>()
+                .Log(new Log("Job start at " + DateTime.Now));
+        }
+
+        public sealed override void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers)
+        {
+
+        }
+
+        public sealed override void AfterBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers)
+        {
+            loggers.GetLogger<StandardLogger.StandardLogger>()
+                .Log(new Log("the job " + Name + " has finish to run", Log.Type.Info));
+        }
 
         #endregion
 
@@ -51,27 +73,6 @@ namespace Library.StandardImplementation.StandardJob
             Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
             Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
             Label = config.GetParameterValue<LabelParameterDefinition.LabelParameterDefinition>("label");
-        }
-
-        #endregion
-
-        #region AsbtractBuild implementation
-
-        public sealed override void PreBuild(Build build, LoggerList loggers)
-        {
-            loggers.GetLogger<JobBuildLogger.JobBuildLogger>()
-                .Log(new Log("Job start at " + DateTime.Now));
-        }
-
-        public sealed override void Build(Build build, LoggerList loggers)
-        {
-            
-        }
-
-        public sealed override void AfterBuild(Build build, LoggerList loggers)
-        {
-            loggers.GetLogger<StandardLogger.StandardLogger>()
-                .Log(new Log("the job " + Name + " has finish to run", Log.Type.Info));
         }
 
         #endregion

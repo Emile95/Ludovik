@@ -3,12 +3,13 @@ using Library.Interface;
 using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.Threading;
 
 namespace Library.Plugins.Job
 {
-    public abstract class Job : IBuildable, ILoadable, IConfigurable, IRunnable, IRepository
+    public abstract class Job : ILoadable, IConfigurable, IRunnable, IRepository
     {
         #region Properties
 
@@ -19,6 +20,12 @@ namespace Library.Plugins.Job
         public Trigger[] Triggers { get; set; }
 
         #endregion
+
+        public abstract void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers);
+
+        public virtual void PreBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers) { }
+
+        public virtual void AfterBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers) { }
 
         #region ILoadable implementation
 
@@ -60,23 +67,13 @@ namespace Library.Plugins.Job
 
         #endregion
 
-        #region IBuildable Implementation
-
-        public virtual void PreBuild(Build build, LoggerList loggers) { }
-
-        public virtual void Build(Build build, LoggerList loggers) { }
-
-        public virtual void AfterBuild(Build build, LoggerList loggers) { }
-
-        #endregion
-
         #region IRunnable Implementation
 
-        public void Run(LoggerList loggers)
+        public void Run(CancellationToken taskCancelToken, LoggerList loggers)
         {
-            for(double x = 0; x < 500000000; x+=0.1)
+            for(double x = 0; x < 500000000; x+=0.5)
             {
-
+                taskCancelToken.ThrowIfCancellationRequested();
             }
 
             Build build = new Build(1,"#1","");
@@ -84,9 +81,9 @@ namespace Library.Plugins.Job
 
             loggers.AddLogger(new JobBuildLogger(Name,build.Number));
 
-            PreBuild(build, loggers);
-            Build(build, loggers);
-            AfterBuild(build, loggers);
+            PreBuild(build, taskCancelToken, loggers);
+            Build(build, taskCancelToken, loggers);
+            AfterBuild(build, taskCancelToken, loggers);
         }
 
         #endregion
