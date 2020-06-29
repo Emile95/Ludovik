@@ -1,5 +1,6 @@
 ﻿using Application.JobApplication;
 using Application.JobApplication.PostModel;
+using Application.SendedModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -23,10 +24,17 @@ namespace WebApi.Controllers
             return Ok(_jobApplication.GetRunningJobs());
         }
 
-        [HttpPost("run")]
-        public IActionResult Run([FromBody] JobRunSetting setting)
+        [HttpPost("cancelRun")]
+        public IActionResult CancelRunningJob([FromBody] CancelRunModel model)
         {
-            _jobApplication.RunJob(setting);
+            _jobApplication.CancelRunningJob(model);
+            return Ok();
+        }
+
+        [HttpPost("run")]
+        public IActionResult Run([FromBody] JobRunSetting model)
+        {
+            _jobApplication.RunJob(model);
             return Ok();
         }
     }

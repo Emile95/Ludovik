@@ -1,4 +1,5 @@
 ﻿using Application.JobApplication.PostModel;
+using Application.SendedModel;
 using Application.ThreadApplication;
 using Library;
 using Library.Class;
@@ -36,6 +37,11 @@ namespace Application.JobApplication
             loggers.AddLogger(new StandardLogger());
 
             _threadApplication.AddRun(setting.Name, job, loggers);
+        }
+
+        public void CancelRunningJob(CancelRunModel model)
+        {
+            _threadApplication.CancelRun(model.Key);
         }
 
         public object GetRunningJobs()

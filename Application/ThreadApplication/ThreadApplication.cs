@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application.ThreadApplication
 {
@@ -12,13 +13,13 @@ namespace Application.ThreadApplication
     {
         private readonly Dictionary<string, System.Timers.Timer> _intervals;
         private readonly Dictionary<string, IRunnable> _runs;
-        private readonly Dictionary<string, Thread> _threads;
+        private readonly Dictionary<string, CancellationTokenSource> _tokens;
 
         public ThreadApplication()
         {
             _intervals = new Dictionary<string, System.Timers.Timer>();
             _runs = new Dictionary<string, IRunnable>();
-            _threads = new Dictionary<string, Thread>();
+            _tokens = new Dictionary<string, CancellationTokenSource>();
         }
 
         #region IThreadApplication
@@ -43,22 +44,33 @@ namespace Application.ThreadApplication
             _intervals.Remove(key);
         }
 
-        public void AddRun(string key, IRunnable runner, LoggerList loggers)
+        public async void AddRun(string key, IRunnable runner, LoggerList loggers)
         {
+            CancellationTokenSource tokenSource = new CancellationTokenSource();
+
             _runs.Add(key, runner);
-            Thread thread = new Thread(() => { 
+            _tokens.Add(key, tokenSource);
+
+            Task task = Task.Run(() =>
+            {
                 runner.Run(loggers);
                 _runs.Remove(key);
-                _threads.Remove(key);
-            });
-            _threads.Add(key,thread);
-            thread.Start();
+                _tokens.Remove(key);
+                RemoveInterval(key);
+            }, tokenSource.Token);
+
+            try
+            {
+                await task;
+            } catch(Exception e) { }
         }
 
         public void CancelRun(string key)
         {
-            _threads[key].Abort();
-            _threads.Remove(key);
+            _tokens[key].Cancel();
+            _tokens[key].Dispose();
+            RemoveInterval(key);
+            _tokens.Remove(key);
             _runs.Remove(key);
         }
 

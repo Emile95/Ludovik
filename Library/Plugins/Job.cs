@@ -74,7 +74,10 @@ namespace Library.Plugins.Job
 
         public void Run(LoggerList loggers)
         {
-            Thread.Sleep(10000);
+            for(double x = 0; x < 500000000; x+=0.1)
+            {
+
+            }
 
             Build build = new Build(1,"#1","");
             build.CreateRepository("jobs\\"+Name+"\\builds");
