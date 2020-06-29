@@ -30,7 +30,8 @@ namespace WebApi
         {
             services.AddControllers();
 
-            services.AddScoped<IThreadApplication, ThreadApplication>();
+            services.AddSingleton<ThreadApplication>();
+
             services.AddScoped<IJobApplication, JobApplication>();
 
             PluginStorage.AddJobPlugin(typeof(StandardJob));

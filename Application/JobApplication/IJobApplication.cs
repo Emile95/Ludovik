@@ -5,5 +5,7 @@ namespace Application.JobApplication
     public interface IJobApplication
     {
         void RunJob(JobRunSetting setting);
+
+        object GetRunningJobs();
     }
 }

@@ -17,10 +17,10 @@ namespace WebApi.Controllers
             _jobApplication = jobApplication;
         }
 
-        [HttpGet("{name}/config")]
-        public IActionResult GetConfig(string name)
+        [HttpGet("running")]
+        public IActionResult GetRunningJobs()
         {
-            return Ok();
+            return Ok(_jobApplication.GetRunningJobs());
         }
 
         [HttpPost("run")]

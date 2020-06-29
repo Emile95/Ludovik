@@ -4,6 +4,7 @@ using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Threading;
 
 namespace Library.Plugins.Job
 {
@@ -73,6 +74,8 @@ namespace Library.Plugins.Job
 
         public void Run(LoggerList loggers)
         {
+            Thread.Sleep(10000);
+
             Build build = new Build(1,"#1","");
             build.CreateRepository("jobs\\"+Name+"\\builds");
 
