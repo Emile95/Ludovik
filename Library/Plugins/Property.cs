@@ -18,7 +18,7 @@ namespace Library.Plugins
 
             string jsonStr = depthTab + "{\n";
             jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + GetType().ToString() + "\"," + "\n";
-            jsonStr += depthTab + "\t" + "\"name\":" + "\"" + Name + "\"," + "\n";
+            jsonStr += depthTab + "\t" + "\"name\":" + "\"" + Name + "\"" + "\n";
             jsonStr += depthTab + "}";
             return jsonStr;
         }

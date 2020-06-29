@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
@@ -72,13 +73,13 @@ namespace Library.StandardImplementation.StandardJob
             jsonStr += depthTab+"\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
             jsonStr += depthTab+"\t" + "\"label\":" + "\"" + Label + "\"," + "\n";
 
-            jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
+            jsonStr += depthTab +"\t" + "\"properties\":" + "[\n";
 
-            Properties.ForEach(prop =>
+            for(int i = 0; i < Properties.Count; i++)
             {
-                jsonStr += prop.ToJson(true,nbTab+2);
-                jsonStr += ",\n";
-            });
+                jsonStr += Properties[i].ToJson(true, nbTab + 2);
+                jsonStr +=  (i < Properties.Count-1 ? "," : "") + "\n";
+            }
 
             jsonStr += depthTab + "\t]" + "\n";
 
