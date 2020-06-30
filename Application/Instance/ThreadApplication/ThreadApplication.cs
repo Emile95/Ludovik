@@ -57,7 +57,11 @@ namespace Application.ThreadApplication
                 {
                     runner.Run(tokenSource.Token, loggers);
                 }
-                catch (OperationCanceledException e) { }
+                catch (OperationCanceledException e) 
+                {
+                    _tokens.Remove(key);
+                    _runs.Remove(key);
+                }
                 finally
                 {
                     tokenSource.Dispose();
@@ -72,8 +76,6 @@ namespace Application.ThreadApplication
         public void CancelRun(string key)
         {
             _tokens[key].Cancel();
-            _tokens.Remove(key);
-            _runs.Remove(key);
         }
 
         public object[] GetRuns<T>() where T : class

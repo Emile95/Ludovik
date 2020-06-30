@@ -2,7 +2,7 @@
 
 namespace Application.JobApplication.PostModel
 {
-    public class JobRunSetting
+    public class JobRunModel
     {
         public string Name { get; set; }
     }

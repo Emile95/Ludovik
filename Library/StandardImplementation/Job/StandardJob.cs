@@ -14,13 +14,12 @@ namespace Library.StandardImplementation.StandardJob
     {
         #region Properties
 
-        public string Label { get; set; }
-
         #endregion
 
         public StandardJob()
         {
-            Properties = new List<Property>();
+            ClassName = " StandardJob";
+            Properties = new List<PropertyDefinition>();
         }
 
         #region Job implementation
@@ -52,39 +51,6 @@ namespace Library.StandardImplementation.StandardJob
 
             string configFile = File.ReadAllText(path + "\\" + folderName + "\\config.json");
             JObject configFileObject = JObject.Parse(configFile);
-
-            Label = configFileObject.Value<string>("label");
-        }
-
-        #endregion
-
-        #region IConvertable Implementation
-
-        public sealed override string ToJson(bool beautify, int nbTab = 0)
-        {
-            string depthTab = "";
-            for(int i = 0; i < nbTab; i++)
-            {
-                depthTab += "\t";
-            }
-
-            string jsonStr = depthTab+"{\n";
-            jsonStr += depthTab+"\t" + "\"_class\":" + "\"" + GetType().ToString() + "\"," + "\n";
-            jsonStr += depthTab+"\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
-            jsonStr += depthTab+"\t" + "\"label\":" + "\"" + Label + "\"," + "\n";
-
-            jsonStr += depthTab +"\t" + "\"properties\":" + "[\n";
-
-            for(int i = 0; i < Properties.Count; i++)
-            {
-                jsonStr += Properties[i].ToJson(true, nbTab + 2);
-                jsonStr +=  (i < Properties.Count-1 ? "," : "") + "\n";
-            }
-
-            jsonStr += depthTab + "\t]" + "\n";
-
-            jsonStr += "}";
-            return jsonStr;
         }
 
         #endregion
@@ -94,10 +60,6 @@ namespace Library.StandardImplementation.StandardJob
         public sealed override Config GetConfig()
         {
             Config config = base.GetConfig();
-            config.AddParameter(
-                Label,
-                new LabelParameterDefinition.LabelParameterDefinition("Label", "Label used for this job")
-            );
 
             return config;
         }
@@ -106,7 +68,6 @@ namespace Library.StandardImplementation.StandardJob
         {
             Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
             Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
-            Label = config.GetParameterValue<LabelParameterDefinition.LabelParameterDefinition>("label");
         }
 
         #endregion

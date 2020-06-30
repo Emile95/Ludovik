@@ -2,6 +2,7 @@ using Library.Class;
 using Library.Plugins;
 using Library.Plugins.Job;
 using Library.StandardImplementation.LabelParameterDefinition;
+using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
 using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StringParameterDefinition;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,13 +35,10 @@ namespace UnitTest
             Job job = new StandardJob();
             job.LoadConfig(config);
 
-
-            Property prop = new Library.Plugins.Property();
-            prop.Name = "orion";
+            PropertyDefinition prop = new ParameterizedRunPropertyDefinition();
             job.Properties.Add(prop);
 
-            Property prop2 = new Library.Plugins.Property();
-            prop2.Name = "prelude";
+            PropertyDefinition prop2 = new ParameterizedRunPropertyDefinition();
             job.Properties.Add(prop2);
 
             job.CreateRepository("jobs");

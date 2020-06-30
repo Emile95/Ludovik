@@ -3,7 +3,6 @@ using Library.Interface;
 using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -16,17 +15,23 @@ namespace Library.Plugins.Job
 
         public string Name { get; set; }
 
+        public string ClassName { get; set; }
+
         public string Description { get; set; }
 
-        public List<Property> Properties { get; set; }
+        public List<PropertyDefinition> Properties { get; set; }
 
         #endregion
+
+        #region Abstract Methods
 
         public abstract void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers);
 
         public virtual void PreBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers) { }
 
         public virtual void AfterBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers) { }
+
+        #endregion
 
         #region ILoadable implementation
 
@@ -42,10 +47,37 @@ namespace Library.Plugins.Job
 
         #endregion
 
-
         #region IConvertable
 
-        public abstract string ToJson(bool beautify, int nbTab = 0);
+        #region IConvertable Implementation
+
+        public  string ToJson(bool beautify, int nbTab = 0)
+        {
+            string depthTab = "";
+            for (int i = 0; i < nbTab; i++)
+            {
+                depthTab += "\t";
+            }
+
+            string jsonStr = depthTab + "{\n";
+            jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + ClassName + "\"," + "\n";
+            jsonStr += depthTab + "\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
+
+            jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
+
+            for (int i = 0; i < Properties.Count; i++)
+            {
+                jsonStr += Properties[i].ToJson(true, nbTab + 2);
+                jsonStr += (i < Properties.Count - 1 ? "," : "") + "\n";
+            }
+
+            jsonStr += depthTab + "\t]" + "\n";
+
+            jsonStr += "}";
+            return jsonStr;
+        }
+
+        #endregion
 
         #endregion
 

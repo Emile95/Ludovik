@@ -5,7 +5,7 @@ namespace Application.JobApplication
 {
     public interface IJobApplication
     {
-        void RunJob(JobRunSetting setting);
+        void RunJob(JobRunModel model);
 
         void CancelRunningJob(CancelRunModel model);
 

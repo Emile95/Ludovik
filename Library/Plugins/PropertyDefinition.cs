@@ -2,9 +2,10 @@
 
 namespace Library.Plugins
 {
-    public class Property : IConvertable
+    public class PropertyDefinition : IConvertable
     {
-        public string Name { get; set; }
+        public string ClassName { get; set; }
+        public string Description { get; set; }
 
         #region IConvertable
 
@@ -17,8 +18,7 @@ namespace Library.Plugins
             }
 
             string jsonStr = depthTab + "{\n";
-            jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + GetType().ToString() + "\"," + "\n";
-            jsonStr += depthTab + "\t" + "\"name\":" + "\"" + Name + "\"" + "\n";
+            jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + ClassName + "\"," + "\n";
             jsonStr += depthTab + "}";
             return jsonStr;
         }

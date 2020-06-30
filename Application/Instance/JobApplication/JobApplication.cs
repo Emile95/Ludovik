@@ -22,18 +22,20 @@ namespace Application.JobApplication
 
         #region IJobApplication Implementation
 
-        public void RunJob(JobRunSetting setting)
+        public void RunJob(JobRunModel model)
         {
-            JObject jObject = JObject.Parse(File.ReadAllText("jobs\\" + setting.Name + "\\config.json"));
+            JObject jObject = JObject.Parse(File.ReadAllText("jobs\\" + model.Name + "\\config.json"));
 
             Job job = PluginStorage.CreateJob(jObject.Value<string>("_class"));
 
-            job.LoadFromFolder("jobs", setting.Name);
+            job.LoadFromFolder("jobs", model.Name);
+
+
 
             LoggerList loggers = new LoggerList();
             loggers.AddLogger(new StandardLogger());
 
-            _threadApplication.AddRun(setting.Name, job, loggers);
+            _threadApplication.AddRun(model.Name, job, loggers);
         }
 
         public void CancelRunningJob(CancelRunModel model)

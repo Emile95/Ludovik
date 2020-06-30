@@ -32,9 +32,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("run")]
-        public IActionResult Run([FromBody] JobRunSetting model)
+        public IActionResult Run([FromBody] JobRunModel model)
         {
-            //_jobApplication.RunJob(model);
+            _jobApplication.RunJob(model);
             return Ok();
         }
     }
