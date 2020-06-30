@@ -17,21 +17,6 @@ namespace UnitTest
         {
             Config config = new Config();
 
-            config.AddParameter(
-                "job2",
-                new StringParameterDefinition("name","name of this job")
-            );
-
-            config.AddParameter(
-                "slave",
-                new LabelParameterDefinition("label", "label of this job")
-            );
-
-            config.AddParameter(
-                "job 2 description",
-                new StringParameterDefinition("description", "description of this job")
-            );
-
             Job job = new StandardJob();
             job.LoadConfig(config);
 

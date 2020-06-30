@@ -2,10 +2,12 @@
 
 namespace Library.Plugins
 {
-    public class PropertyDefinition : IConvertable
+    public abstract class PropertyDefinition : IConvertable
     {
         public string ClassName { get; set; }
         public string Description { get; set; }
+
+        public abstract bool VerifyIntegrity(string[] values);
 
         #region IConvertable
 

@@ -8,6 +8,6 @@
 
         public string DefaultValue { get; protected set; }
 
-        public abstract bool VerifyValue(string value, Logger.Logger logger = null);
+        public abstract bool VerifyValue(string value);
     }
 }

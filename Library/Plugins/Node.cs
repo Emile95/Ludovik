@@ -37,7 +37,7 @@ namespace Library.Plugins.Node
             JObject configFileObject = JObject.Parse(configFile);
 
             Config config = new Config();
-            config.AddParameter(
+            /*config.AddParameter(
                 Name,
                 new StringParameterDefinition("name", "Name of this node")
             );
@@ -49,7 +49,7 @@ namespace Library.Plugins.Node
                 configFileObject.Value<string>("labels"),
                 new StringParameterDefinition("labels", "Labels attach to this node")
             );
-
+            */
             return config;
         }
 

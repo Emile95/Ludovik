@@ -10,9 +10,9 @@ namespace Library.StandardImplementation.StandardNode
 
         public override void LoadConfig(Config config)
         {
-            Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
+            /*Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
             Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
-            Labels = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("labels");
+            Labels = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("labels");*/
         }
 
         public override void SaveConfig(Config config)

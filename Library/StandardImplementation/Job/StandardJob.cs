@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
@@ -66,8 +65,8 @@ namespace Library.StandardImplementation.StandardJob
 
         public sealed override void LoadConfig(Config config)
         {
-            Name = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("name");
-            Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
+            //Name = config.GetPropertyValues<StringParameterDefinition.StringParameterDefinition>("name");
+            //Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
         }
 
         #endregion

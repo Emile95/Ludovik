@@ -11,7 +11,7 @@ namespace Library.StandardImplementation.StringParameterDefinition
             Description = description;
         }
 
-        public sealed override bool VerifyValue(string value, Logger logger)
+        public sealed override bool VerifyValue(string value)
         {
             return true;
         }

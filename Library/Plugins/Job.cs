@@ -47,8 +47,6 @@ namespace Library.Plugins.Job
 
         #endregion
 
-        #region IConvertable
-
         #region IConvertable Implementation
 
         public  string ToJson(bool beautify, int nbTab = 0)
@@ -79,8 +77,6 @@ namespace Library.Plugins.Job
 
         #endregion
 
-        #endregion
-
         #region IConfigurable implementation
 
         public virtual Config GetConfig()
@@ -89,7 +85,7 @@ namespace Library.Plugins.Job
             JObject configFileObject = JObject.Parse(configFile);
 
             Config config = new Config();
-            config.AddParameter(
+            /*config.AddParameter(
                 Name,
                 new StringParameterDefinition("Name","Name of this job")
             );
@@ -97,7 +93,7 @@ namespace Library.Plugins.Job
                 configFileObject.Value<string>("description"),
                 new StringParameterDefinition("Description", "Description of this job")
             );
-
+            */
             return config;
         }
 

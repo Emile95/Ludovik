@@ -12,7 +12,7 @@ namespace Library.StandardImplementation.LabelParameterDefinition
             Description = description;
         }
 
-        public sealed override bool VerifyValue(string value, Logger logger)
+        public sealed override bool VerifyValue(string value)
         {
             if(!Directory.Exists("nodes\\" + value))
             {

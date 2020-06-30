@@ -1,51 +1,42 @@
-﻿using Library.Plugins.Logger;
-using Library.Plugins.ParameterDefinition;
+﻿using Library.Plugins;
 using System.Collections.Generic;
 
 namespace Library.Class
 {
     public class Config
     {
-        private List<System.Tuple<ParameterDefinition, string>> _params;
+        private List<System.Tuple<PropertyDefinition, string[]>> _props;
 
         public Config()
         {
-            _params = new List<System.Tuple<ParameterDefinition, string>>();
+            _props = new List<System.Tuple<PropertyDefinition, string[]>>();
         }
 
-        public void AddParameter(string value, ParameterDefinition paramDef)
+        public void AddProperty(string[] values, PropertyDefinition propertyDefinition)
         {
-            _params.Add(new System.Tuple<ParameterDefinition, string>(
-                paramDef,
-                value
+            _props.Add(new System.Tuple<PropertyDefinition, string[]>(
+                propertyDefinition,
+                values
             ));
         }
 
-        public string GetParameterValue<T>(object key)
+        public string[] GetPropertyValues<T>(object key)
         {
-            string strKey = key as string;
-
-            foreach(System.Tuple<ParameterDefinition, string> param in _params)
-            {
-                if(param.Item1.GetType() == typeof(T))
-                {
-                    if (param.Item1.Name == strKey)
-                        return param.Item2;
-                }
-            }
-
             return null;
         }
 
-        public bool ValidateParams(Logger logger = null)
+        public bool ValidateProperties()
         {
-            foreach(System.Tuple<ParameterDefinition, string> param in _params )
-            {
-                if (!param.Item1.VerifyValue(param.Item2, logger))
-                {
+            foreach(System.Tuple<PropertyDefinition, string[]> param in _props)
+                if (!param.Item1.VerifyIntegrity(param.Item2))
                     return false;
-                }
-            }
+            return true;
+        }
+
+        public bool ValidateProperty(int i)
+        {
+            if (!_props[i].Item1.VerifyIntegrity(_props[i].Item2))
+                return false;
             return true;
         }
     }
