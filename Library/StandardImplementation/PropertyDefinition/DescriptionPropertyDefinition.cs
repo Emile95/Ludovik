@@ -1,13 +1,13 @@
 ﻿using Library.Plugins;
 using Library.Plugins.ParameterDefinition;
 
-namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
+namespace Library.StandardImplementation.DescriptionPropertyDefinition
 {
-    public class ParameterizedRunPropertyDefinition : PropertyDefinition
+    public class DescriptionPropertyDefinition : PropertyDefinition
     {
-        public ParameterizedRunPropertyDefinition()
+        public DescriptionPropertyDefinition()
         {
-            ClassName = "ParameterizedRunProperty";
+            ClassName = "DescriptionProperty";
         }
 
         #region PropertyDefinition Implementation
@@ -20,7 +20,7 @@ namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
             };
         }
 
-        public override bool VerifyIntegrity(string[] values)
+        public sealed override bool VerifyIntegrity(string[] values)
         {
             return true;
         }

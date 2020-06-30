@@ -54,23 +54,6 @@ namespace Library.StandardImplementation.StandardJob
 
         #endregion
 
-        #region IConfigurable implementation
-
-        public sealed override Config GetConfig()
-        {
-            Config config = base.GetConfig();
-
-            return config;
-        }
-
-        public sealed override void LoadConfig(Config config)
-        {
-            //Name = config.GetPropertyValues<StringParameterDefinition.StringParameterDefinition>("name");
-            //Description = config.GetParameterValue<StringParameterDefinition.StringParameterDefinition>("description");
-        }
-
-        #endregion
-
         #region IRepository Implementation
 
         public sealed override void CreateRepository(string path)

@@ -5,30 +5,29 @@ namespace Library.Class
 {
     public class Config
     {
-        private List<System.Tuple<PropertyDefinition, string[]>> _props;
+        private Dictionary<PropertyDefinition, string[]> _props;
 
         public Config()
         {
-            _props = new List<System.Tuple<PropertyDefinition, string[]>>();
+            _props = new Dictionary<PropertyDefinition, string[]>();
         }
 
-        public void AddProperty(string[] values, PropertyDefinition propertyDefinition)
+        public void AddProperty(PropertyDefinition propertyDefinition, string[] values)
         {
-            _props.Add(new System.Tuple<PropertyDefinition, string[]>(
-                propertyDefinition,
-                values
-            ));
+            _props.Add(propertyDefinition, values);
         }
 
-        public string[] GetPropertyValues<T>(object key)
+        public string[] GetPropertyValues<T>() where T : PropertyDefinition
         {
+            foreach (KeyValuePair<PropertyDefinition, string[]> param in _props)
+                if(param.Key is T) return param.Value;
             return null;
         }
 
         public bool ValidateProperties()
         {
-            foreach(System.Tuple<PropertyDefinition, string[]> param in _props)
-                if (!param.Item1.VerifyIntegrity(param.Item2))
+            foreach(KeyValuePair<PropertyDefinition, string[]> param in _props)
+                if (!param.Key.VerifyIntegrity(param.Value))
                     return false;
             return true;
         }

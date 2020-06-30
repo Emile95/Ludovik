@@ -2,11 +2,11 @@
 {
     public abstract class ParameterDefinition
     {
-        public string Name { get; protected set; }
+        protected string _className;
 
-        public string Description { get; protected set; }
+        public string Name { get; set; }
 
-        public string DefaultValue { get; protected set; }
+        public string Description { get; set; }
 
         public abstract bool VerifyValue(string value);
     }

@@ -1,14 +1,12 @@
-﻿using Library.Plugins.Logger;
-using Library.Plugins.ParameterDefinition;
+﻿using Library.Plugins.ParameterDefinition;
 
 namespace Library.StandardImplementation.StringParameterDefinition
 {
     public class StringParameterDefinition : ParameterDefinition
     {
-        public StringParameterDefinition(string name, string description)
+        public StringParameterDefinition()
         {
-            Name = name;
-            Description = description;
+            _className = "StringParameter";
         }
 
         public sealed override bool VerifyValue(string value)

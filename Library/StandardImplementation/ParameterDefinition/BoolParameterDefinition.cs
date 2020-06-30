@@ -4,6 +4,11 @@ namespace Library.StandardImplementation.BoolParameterDefinition
 {
     public class BoolParameterDefinition : ParameterDefinition
     {
+        public BoolParameterDefinition()
+        {
+            _className = "BoolParameter";
+        }
+
         public sealed override bool VerifyValue(string value)
         {
             switch(value)

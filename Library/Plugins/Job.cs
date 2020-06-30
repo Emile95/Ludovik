@@ -1,7 +1,6 @@
 ﻿using Library.Class;
 using Library.Interface;
 using Library.StandardImplementation.JobBuildLogger;
-using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -79,7 +78,7 @@ namespace Library.Plugins.Job
 
         #region IConfigurable implementation
 
-        public virtual Config GetConfig()
+        public Config GetConfig()
         {
             string configFile = File.ReadAllText("jobs\\"+Name + "\\config.json");
             JObject configFileObject = JObject.Parse(configFile);
@@ -97,7 +96,10 @@ namespace Library.Plugins.Job
             return config;
         }
 
-        public abstract void LoadConfig(Config config);
+        public void LoadConfig(Config config)
+        {
+
+        }
 
         #endregion
 

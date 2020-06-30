@@ -1,5 +1,4 @@
-﻿using Library.Plugins.Logger;
-using Library.Plugins.ParameterDefinition;
+﻿using Library.Plugins.ParameterDefinition;
 using System.IO;
 
 namespace Library.StandardImplementation.LabelParameterDefinition
@@ -8,8 +7,7 @@ namespace Library.StandardImplementation.LabelParameterDefinition
     {
         public LabelParameterDefinition(string name, string description)
         {
-            Name = name;
-            Description = description;
+            _className = "LabelParameter";
         }
 
         public sealed override bool VerifyValue(string value)
