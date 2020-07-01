@@ -1,9 +1,7 @@
 ﻿using Library.Class;
-using Library.Plugins;
 using Library.Plugins.Job;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -11,14 +9,35 @@ namespace Library.StandardImplementation.StandardJob
 {
     public class StandardJob : Job
     {
-        #region Properties
-
-        #endregion
+        #region Properties and Constructor
 
         public StandardJob()
         {
             ClassName = "StandardJob";
         }
+
+        #endregion
+
+        #region Job implementation
+
+        public sealed override void PreBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers)
+        {
+
+        }
+
+        public sealed override void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers)
+        {
+
+        }
+
+        public sealed override void AfterBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers)
+        {
+
+        }
+
+        #endregion
+
+        #region IConvertable Implementation
 
         public sealed override string ToJson(bool beautify, int nbTab = 0)
         {
@@ -44,26 +63,6 @@ namespace Library.StandardImplementation.StandardJob
 
             jsonStr += "}";
             return jsonStr;
-        }
-        
-
-        #region Job implementation
-
-        public sealed override void PreBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers)
-        {
-            loggers.GetLogger<JobBuildLogger.JobBuildLogger>()
-                .Log(new Log("Job start at " + DateTime.Now));
-        }
-
-        public sealed override void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers)
-        {
-
-        }
-
-        public sealed override void AfterBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers)
-        {
-            loggers.GetLogger<StandardLogger.StandardLogger>()
-                .Log(new Log("the job " + Name + " has finish to run", Log.Type.Info));
         }
 
         #endregion
