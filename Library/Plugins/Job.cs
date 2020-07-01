@@ -1,7 +1,9 @@
 ﻿using Library.Class;
 using Library.Interface;
+using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -12,13 +14,18 @@ namespace Library.Plugins.Job
     {
         #region Properties
 
-        public string Name { get; set; }
-
         public string ClassName { get; set; }
+
+        public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public List<PropertyDefinition> Properties { get; set; }
+        public List<Tuple<PropertyDefinition,string[]>> Properties { get; set; }
+
+        public Job()
+        {
+            Properties = new List<Tuple<PropertyDefinition, string[]>>();
+        }
 
         #endregion
 
@@ -48,31 +55,7 @@ namespace Library.Plugins.Job
 
         #region IConvertable Implementation
 
-        public  string ToJson(bool beautify, int nbTab = 0)
-        {
-            string depthTab = "";
-            for (int i = 0; i < nbTab; i++)
-            {
-                depthTab += "\t";
-            }
-
-            string jsonStr = depthTab + "{\n";
-            jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + ClassName + "\"," + "\n";
-            jsonStr += depthTab + "\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
-
-            jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
-
-            for (int i = 0; i < Properties.Count; i++)
-            {
-                jsonStr += Properties[i].ToJson(true, nbTab + 2);
-                jsonStr += (i < Properties.Count - 1 ? "," : "") + "\n";
-            }
-
-            jsonStr += depthTab + "\t]" + "\n";
-
-            jsonStr += "}";
-            return jsonStr;
-        }
+        public abstract string ToJson(bool beautify, int nbTab = 0);
 
         #endregion
 
@@ -98,7 +81,13 @@ namespace Library.Plugins.Job
 
         public void LoadConfig(Config config)
         {
+            foreach(KeyValuePair<PropertyDefinition, string[]> prop in config.Props)
+            {
+                Properties.Add(new Tuple<PropertyDefinition, string[]>(prop.Key,prop.Value));
+            }
 
+            Name = Properties[0].Item2[0];
+            Description = Properties[0].Item2[1];
         }
 
         #endregion

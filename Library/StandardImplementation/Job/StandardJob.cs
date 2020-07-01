@@ -18,8 +18,34 @@ namespace Library.StandardImplementation.StandardJob
         public StandardJob()
         {
             ClassName = " StandardJob";
-            Properties = new List<PropertyDefinition>();
         }
+
+        public sealed override string ToJson(bool beautify, int nbTab = 0)
+        {
+            string depthTab = "";
+            for (int i = 0; i < nbTab; i++)
+            {
+                depthTab += "\t";
+            }
+
+            string jsonStr = depthTab + "{\n";
+            jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + ClassName + "\"," + "\n";
+            jsonStr += depthTab + "\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
+
+            jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
+
+            for (int i = 1; i < Properties.Count; i++)
+            {
+                jsonStr += Properties[i].Item1.ToJson(true, nbTab + 2);
+                jsonStr += (i < Properties.Count - 1 ? "," : "") + "\n";
+            }
+
+            jsonStr += depthTab + "\t]" + "\n";
+
+            jsonStr += "}";
+            return jsonStr;
+        }
+        
 
         #region Job implementation
 

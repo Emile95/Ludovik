@@ -1,5 +1,4 @@
 ﻿using Library.Plugins;
-using Library.Plugins.ParameterDefinition;
 
 namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
 {
@@ -11,14 +10,6 @@ namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
         }
 
         #region PropertyDefinition Implementation
-
-        public sealed override ParameterDefinition[] GetParameterDefinitions()
-        {
-            return new ParameterDefinition[] {
-                new StringParameterDefinition.StringParameterDefinition() { Name = "name" },
-                new StringParameterDefinition.StringParameterDefinition() { Name = "description" }
-            };
-        }
 
         public override bool VerifyIntegrity(string[] values)
         {

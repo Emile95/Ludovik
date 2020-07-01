@@ -1,6 +1,7 @@
 using Library.Class;
 using Library.Plugins;
 using Library.Plugins.Job;
+using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.LabelParameterDefinition;
 using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
 using Library.StandardImplementation.StandardJob;
@@ -17,18 +18,14 @@ namespace UnitTest
         {
             Config config = new Config();
 
+            config.AddProperty(new DescriptionPropertyDefinition(), new string[] { "job1", "standard job" });
+
             Job job = new StandardJob();
             job.LoadConfig(config);
 
-            PropertyDefinition prop = new ParameterizedRunPropertyDefinition();
-            job.Properties.Add(prop);
-
-            PropertyDefinition prop2 = new ParameterizedRunPropertyDefinition();
-            job.Properties.Add(prop2);
-
             job.CreateRepository("jobs");
 
-            Assert.AreEqual(job.Name,"job2");
+            Assert.AreEqual(job.Name,"job1");
         }
     }
 }

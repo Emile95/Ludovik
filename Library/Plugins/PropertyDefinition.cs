@@ -1,4 +1,5 @@
 ﻿using Library.Interface;
+using System.Collections.Generic;
 
 namespace Library.Plugins
 {
@@ -6,7 +7,17 @@ namespace Library.Plugins
     {
         public string ClassName { get; set; }
 
-        public abstract ParameterDefinition.ParameterDefinition[] GetParameterDefinitions();
+        public List<ParameterDefinition.ParameterDefinition> ParamDefs { get; protected set; }
+
+        public PropertyDefinition()
+        {
+            ParamDefs = new List<ParameterDefinition.ParameterDefinition>();
+        }
+
+        public void AddParameterDefinition(ParameterDefinition.ParameterDefinition ParamDef)
+        {
+            ParamDefs.Add(ParamDef);
+        }
 
         public abstract bool VerifyIntegrity(string[] values);
 
