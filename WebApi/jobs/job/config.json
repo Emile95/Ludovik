@@ -1,5 +1,6 @@
 {
-	"_class":"Library.StandardImplementation.StandardJob.StandardJob",
-	"description":"standard job",
-	"label":"slave"
+	"_class":" StandardJob",
+	"description":"An standard job",
+	"properties":[
+	]
 }

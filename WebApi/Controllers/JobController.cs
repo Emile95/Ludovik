@@ -24,6 +24,13 @@ namespace WebApi.Controllers
             return Ok(_jobApplication.GetRunningJobs());
         }
 
+        [HttpPost("create")]
+        public IActionResult CreateJob([FromBody] JobConfigModel model)
+        {
+            _jobApplication.CreateJob(model);
+            return Ok();
+        }
+
         [HttpPost("cancelRun")]
         public IActionResult CancelRunningJob([FromBody] CancelRunModel model)
         {

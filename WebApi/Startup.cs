@@ -1,6 +1,10 @@
 using Application.JobApplication;
 using Application.ThreadApplication;
 using Library;
+using Library.Plugins.Job;
+using Library.Plugins.Logger;
+using Library.Plugins.Node;
+using Library.Plugins.ParameterDefinition;
 using Library.StandardImplementation.BoolParameterDefinition;
 using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.LabelParameterDefinition;
@@ -34,16 +38,16 @@ namespace WebApi
 
             services.AddScoped<IJobApplication, JobApplication>();
 
-            PluginStorage.AddJobPlugin(typeof(StandardJob));
+            PluginStorage.AddPlugin<Job>(typeof(StandardJob));
 
-            PluginStorage.AddParameterDefinitionPlugin(typeof(StringParameterDefinition));
-            PluginStorage.AddParameterDefinitionPlugin(typeof(BoolParameterDefinition));
-            PluginStorage.AddParameterDefinitionPlugin(typeof(LabelParameterDefinition));
+            PluginStorage.AddPlugin<ParameterDefinition>(typeof(StringParameterDefinition));
+            PluginStorage.AddPlugin<ParameterDefinition>(typeof(BoolParameterDefinition));
+            PluginStorage.AddPlugin<ParameterDefinition>(typeof(LabelParameterDefinition));
 
-            PluginStorage.AddLoggerlugin(typeof(StandardLogger));
-            PluginStorage.AddLoggerlugin(typeof(JobBuildLogger));
+            PluginStorage.AddPlugin<Logger>(typeof(StandardLogger));
+            PluginStorage.AddPlugin<Logger>(typeof(JobBuildLogger));
 
-            PluginStorage.AddNodePlugin(typeof(StandardNode));
+            PluginStorage.AddPlugin<Node>(typeof(StandardNode));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

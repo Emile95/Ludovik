@@ -3,6 +3,7 @@ using Application.SendedModel;
 using Library;
 using Library.Class;
 using Library.Plugins.Job;
+using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.StandardLogger;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -22,15 +23,29 @@ namespace Application.JobApplication
 
         #region IJobApplication Implementation
 
+        public void CreateJob(JobConfigModel model)
+        {
+            Config config = new Config();
+            config.AddProperty(
+                new DescriptionPropertyDefinition(), 
+                new string[] { 
+                    model.Name,
+                    model.Description
+                }
+            );
+
+            Job job = PluginStorage.CreateObject<Job>(model.ClassName);
+            job.LoadConfig(config);
+            job.CreateRepository("jobs");
+        }
+
         public void RunJob(JobRunModel model)
         {
             JObject jObject = JObject.Parse(File.ReadAllText("jobs\\" + model.Name + "\\config.json"));
 
-            Job job = PluginStorage.CreateJob(jObject.Value<string>("_class"));
+            Job job = PluginStorage.CreateObject<Job>(jObject.Value<string>("_class"));
 
             job.LoadFromFolder("jobs", model.Name);
-
-
 
             LoggerList loggers = new LoggerList();
             loggers.AddLogger(new StandardLogger());
