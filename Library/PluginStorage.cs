@@ -28,11 +28,10 @@ namespace Library
         {
             T obj = null;
             Plugins[typeof(T)].ForEach(o => {
+                
                 string[] str = o.ToString().Split(".");
-                if (str[str.Length - 1].Equals(className))
-                {
-                    obj = Activator.CreateInstance(o) as T;
-                }
+                if (str[str.Length - 1] == className)
+                    obj = Activator.CreateInstance(o) as T;  
             });
             return obj;
         }

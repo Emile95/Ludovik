@@ -17,7 +17,7 @@ namespace Library.StandardImplementation.StandardJob
 
         public StandardJob()
         {
-            ClassName = " StandardJob";
+            ClassName = "StandardJob";
         }
 
         public sealed override string ToJson(bool beautify, int nbTab = 0)
