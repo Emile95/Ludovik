@@ -17,11 +17,11 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
         {
             string command = parameters.Single(o => o.Name == "command").Value;
 
-            ProcessStartInfo processInfo = new ProcessStartInfo("CMD.exe", command);
+            ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
 
             string directory = Path.Combine(System.Environment.CurrentDirectory, "jobs", env.Properties["name"]);
 
-            processInfo.WorkingDirectory = @"F:\Prog\Ludovik\App\WebApi\jobs\" + env.Properties["name"];
+            processInfo.WorkingDirectory = directory;
 
             Process process = Process.Start(processInfo);
 
