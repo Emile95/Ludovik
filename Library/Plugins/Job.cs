@@ -69,11 +69,11 @@ namespace Library.Plugins.Job
 
         #region Abstract Methods
 
-        public abstract void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers);
+        public abstract void Build(Build build, Class.Environment env, CancellationToken taskCancelToken, LoggerList loggers);
 
-        public virtual void PreBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers) { }
+        public virtual void PreBuild(Build build, Class.Environment env, CancellationToken taskCancelToken, LoggerList loggers) { }
 
-        public virtual void AfterBuild(Build build, CancellationToken taskCancelToken, LoggerList loggers) { }
+        public virtual void AfterBuild(Build build, Class.Environment env, CancellationToken taskCancelToken, LoggerList loggers) { }
 
         #endregion
 
@@ -134,36 +134,9 @@ namespace Library.Plugins.Job
 
         #region IConfigurable implementation
 
-        public Config GetConfig()
-        {
-            string configFile = File.ReadAllText("jobs\\"+Name + "\\config.json");
-            JObject configFileObject = JObject.Parse(configFile);
+        public abstract Config GetConfig();
 
-            Config config = new Config();
-            /*config.AddParameter(
-                Name,
-                new StringParameterDefinition("Name","Name of this job")
-            );
-            config.AddParameter(
-                configFileObject.Value<string>("description"),
-                new StringParameterDefinition("Description", "Description of this job")
-            );
-            */
-            return config;
-        }
-
-        public void LoadConfig(Config config)
-        {
-            Property descriptionProperty = config.GetProperty<DescriptionPropertyDefinition>();
-
-            Name = descriptionProperty.Parameters[0].Value;
-            Description = descriptionProperty.Parameters[1].Value;
-
-            foreach (Property prop in config.GetProperties())
-            {
-                Properties.Add(prop);
-            }
-        }
+        public abstract void LoadConfig(Config config);
 
         #endregion
 
@@ -182,22 +155,23 @@ namespace Library.Plugins.Job
 
             //Create the build Environment
             Class.Environment env = new Class.Environment();
-            Properties.ForEach(prop => prop.Definition.AddToEnvironment(env, prop.Parameters.ToArray()));
+
+            Property descriptionProperty = Properties.Single(o => o.Definition is DescriptionPropertyDefinition);
+
+            descriptionProperty.Definition.Apply(env, descriptionProperty.Parameters.ToArray());
+
+            Properties
+                .Where(o => !(o.Definition is DescriptionPropertyDefinition))
+                .ToList()
+                .ForEach(prop => prop.Definition.Apply(env, prop.Parameters.ToArray()));
+
+            env.Properties.Add("buildNumber", build.Number.ToString());
 
             buildLogger.Log(new Log("Start at " + DateTime.Now + "\n"));
 
-            buildLogger.Log(new Log("Environment : ["));
-
-            foreach (KeyValuePair<string, string> prop in env.Properties)
-            {
-                buildLogger.Log(new Log("\t" + prop.Key + " : " + prop.Value));
-            }
-
-            buildLogger.Log(new Log("]\n"));
-
-            PreBuild(build, taskCancelToken, loggers);
-            Build(build, taskCancelToken, loggers);
-            AfterBuild(build, taskCancelToken, loggers);
+            PreBuild(build, env, taskCancelToken, loggers);
+            Build(build, env, taskCancelToken, loggers);
+            AfterBuild(build, env, taskCancelToken, loggers);
 
             buildLogger.Log(new Log("End at " + DateTime.Now));
         }

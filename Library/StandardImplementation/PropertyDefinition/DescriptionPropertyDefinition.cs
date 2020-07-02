@@ -13,7 +13,7 @@ namespace Library.StandardImplementation.DescriptionPropertyDefinition
 
         #region PropertyDefinition Implementation
 
-        public sealed override void AddToEnvironment(Environment env, Parameter[] parameters)
+        public sealed override void Apply(Environment env, Parameter[] parameters)
         {
             env.Properties.Add("name", parameters.Single(o => o.Name == "name").Value);
         }

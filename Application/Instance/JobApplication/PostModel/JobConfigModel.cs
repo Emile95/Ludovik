@@ -4,6 +4,7 @@ using Library.Interface;
 using Library.Plugins.ParameterDefinition;
 using Library.Plugins.PropertyDefinition;
 using Library.StandardImplementation.DescriptionPropertyDefinition;
+using Library.StandardImplementation.StringParameterDefinition;
 using System.Collections.Generic;
 
 namespace Application.JobApplication.PostModel
@@ -44,10 +45,12 @@ namespace Application.JobApplication.PostModel
                 new DescriptionPropertyDefinition(),
                 new Parameter[] {
                     new Parameter() {
+                        Definition = new StringParameterDefinition(),
                         Name = "name",
                         Value = Name
                     },
                     new Parameter() {
+                        Definition = new StringParameterDefinition(),
                         Name = "description",
                         Value = Description
                     }

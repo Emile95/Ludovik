@@ -13,7 +13,7 @@ namespace Library.StandardImplementation.NodePropertyDefinition
 
         #region PropertyDefinition Implementation
 
-        public sealed override void AddToEnvironment(Environment env, Parameter[] parameters)
+        public sealed override void Apply(Environment env, Parameter[] parameters)
         {
             env.Properties.Add("node", parameters.Single(o => o.Name == "label").Value);
         }

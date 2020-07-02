@@ -24,12 +24,12 @@ namespace Library.Class
             _loggers.Add(logger);
         }
 
-        public Logger GetLogger<T>()
+        public T GetLogger<T>() where T : class
         {
             foreach(Logger logger in _loggers)
             {
                 if (logger is T)
-                    return logger;
+                    return logger as T;
             }
             return null;
         }

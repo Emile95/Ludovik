@@ -11,6 +11,16 @@
 					"value":"slave"
 				}
 			]
+		},
+		{
+			"_class":"WindowsBatchBuildStepDefinition",
+			"parameters":[
+				{
+					"_class":"StringParameterDefinition",
+					"name":"command",
+					"value":"echo 5 > hihi.txt"
+				}
+			]
 		}
 	]
 }

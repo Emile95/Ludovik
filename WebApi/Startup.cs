@@ -2,6 +2,7 @@ using Application.JobApplication;
 using Application.ThreadApplication;
 using Library;
 using Library.Class;
+using Library.Plugins.BuildStepDefinition;
 using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Library.Plugins.Node;
@@ -17,6 +18,7 @@ using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
 using Library.StandardImplementation.StandardNode;
 using Library.StandardImplementation.StringParameterDefinition;
+using Library.StandardImplementation.WindowsBatchBuildStepDefinition;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -99,6 +101,9 @@ namespace WebApi
             PluginStorage.AddPlugin<PropertyDefinition>(typeof(DescriptionPropertyDefinition));
             PluginStorage.AddPlugin<PropertyDefinition>(typeof(ParameterizedRunPropertyDefinition));
             PluginStorage.AddPlugin<PropertyDefinition>(typeof(NodePropertyDefinition));
+            PluginStorage.AddPlugin<PropertyDefinition>(typeof(WindowsBatchBuildStepDefinition));
+
+            PluginStorage.AddPlugin<BuildStepDefinition>(typeof(WindowsBatchBuildStepDefinition));
 
             PluginStorage.AddPlugin<Logger>(typeof(StandardLogger));
             PluginStorage.AddPlugin<Logger>(typeof(JobBuildLogger));

@@ -7,11 +7,11 @@ namespace Library.Class
 {
     public class Config
     {
-        public Dictionary<Type, Property> Props { get; private set; }
+        public List<Property> Props { get; private set; }
 
         public Config()
         {
-            Props = new Dictionary<Type, Property>();
+            Props = new List<Property>();
         }
 
         public void AddProperty(PropertyDefinition definition, Parameter[] parameters)
@@ -26,17 +26,16 @@ namespace Library.Class
                 prop.Parameters.Add(parameters[i]);
             }
 
-            Props.Add(definition.GetType(), prop);
+            Props.Add(prop);
         }
 
-        public Property[] GetProperties()
+        public List<Property> GetProperties<T>() where T : class
         {
-            return Props.Values.ToArray();
-        }
-
-        public Property GetProperty<T>()
-        {
-            return Props[typeof(T)];
+            List<Property> props = new List<Property>();
+            foreach(Property prop in Props)
+                if(prop.Definition is T)
+                    props.Add(prop);
+            return props;
         }
     }
 }
