@@ -1,43 +1,42 @@
-﻿using Library.Plugins;
+﻿using Library.Plugins.PropertyDefinition;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Library.Class
 {
     public class Config
     {
-        public Dictionary<PropertyDefinition, string[]> Props { get; private set; }
+        public Dictionary<Type, Property> Props { get; private set; }
 
         public Config()
         {
-            Props = new Dictionary<PropertyDefinition, string[]>();
+            Props = new Dictionary<Type, Property>();
         }
 
-        public void AddProperty(PropertyDefinition propertyDefinition, string[] values)
+        public void AddProperty(PropertyDefinition definition, Parameter[] parameters)
         {
-            Props.Add(propertyDefinition, values);
+            Property prop = new Property()
+            {
+                Definition = definition
+            };
+
+            for(int i = 0; i < parameters.Length; i++)
+            {
+                prop.Parameters.Add(parameters[i]);
+            }
+
+            Props.Add(definition.GetType(), prop);
         }
 
-        public string[] GetPropertyValues<T>() where T : PropertyDefinition
+        public Property[] GetProperties()
         {
-            foreach (KeyValuePair<PropertyDefinition, string[]> prop in Props)
-                if(prop.Key is T) return prop.Value;
-            return null;
+            return Props.Values.ToArray();
         }
 
-        public bool ValidateProperties()
+        public Property GetProperty<T>()
         {
-            foreach(KeyValuePair<PropertyDefinition, string[]> prop in Props)
-                if (!prop.Key.VerifyIntegrity(prop.Value))
-                    return false;
-            return true;
-        }
-
-        public bool ValidateProperty<T>() where T : class, new()
-        {
-            foreach (KeyValuePair<PropertyDefinition, string[]> prop in Props)
-                if (!prop.Key.VerifyIntegrity(prop.Value))
-                    return false;
-            return true;
+            return Props[typeof(T)];
         }
     }
 }

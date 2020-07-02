@@ -6,7 +6,7 @@ namespace Library.StandardImplementation.StringParameterDefinition
     {
         public StringParameterDefinition()
         {
-            _className = "StringParameter";
+            ClassName = "StringParameterDefinition";
         }
 
         public sealed override bool VerifyValue(string value)

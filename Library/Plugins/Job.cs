@@ -1,10 +1,12 @@
 ﻿using Library.Class;
 using Library.Interface;
+using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Library.Plugins.Job
@@ -19,11 +21,11 @@ namespace Library.Plugins.Job
 
         public string Description { get; set; }
 
-        public List<Tuple<PropertyDefinition,string[]>> Properties { get; set; }
+        public List<Property> Properties { get; set; }
 
         public Job()
         {
-            Properties = new List<Tuple<PropertyDefinition, string[]>>();
+            Properties = new List<Property>();
         }
 
         #endregion
@@ -80,13 +82,17 @@ namespace Library.Plugins.Job
 
         public void LoadConfig(Config config)
         {
-            foreach(KeyValuePair<PropertyDefinition, string[]> prop in config.Props)
-            {
-                Properties.Add(new Tuple<PropertyDefinition, string[]>(prop.Key,prop.Value));
-            }
+            Property descriptionProperty = config.GetProperty<DescriptionPropertyDefinition>();
 
-            Name = Properties[0].Item2[0];
-            Description = Properties[0].Item2[1];
+            Name = descriptionProperty.Parameters[0].Value;
+            Description = descriptionProperty.Parameters[1].Value;
+
+            Property[] props = config.GetProperties().Where(o => o.Definition.GetType() != typeof(DescriptionPropertyDefinition)).ToArray();
+
+            foreach (Property prop in props)
+            {
+                Properties.Add(prop);
+            }
         }
 
         #endregion

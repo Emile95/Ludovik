@@ -5,9 +5,9 @@ namespace Library.StandardImplementation.LabelParameterDefinition
 {
     public class LabelParameterDefinition : ParameterDefinition
     {
-        public LabelParameterDefinition(string name, string description)
+        public LabelParameterDefinition()
         {
-            _className = "LabelParameter";
+            ClassName = "LabelParameterDefinition";
         }
 
         public sealed override bool VerifyValue(string value)

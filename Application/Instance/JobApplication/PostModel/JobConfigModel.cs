@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Application.JobApplication.PostModel
 {
@@ -8,15 +8,19 @@ namespace Application.JobApplication.PostModel
         public string ClassName { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<PropConfig> PropConfigs { get; set; }
+        
+        public List<Property> Properties { get; set; }
 
-        public class PropConfig
+        public class Property
         {
             public string ClassName { get; set; }
-            public List<Tuple<ParamConfig,List<string>>> ParamConfigs { get; set; }
-            public class ParamConfig 
+            public List<Parameter> Parameters { get; set; }
+
+            public class Parameter
             {
                 public string ClassName { get; set; }
+                public string Name { get; set; }
+                public string Value { get; set; }
             }
         }
     }

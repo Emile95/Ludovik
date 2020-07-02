@@ -3,9 +3,12 @@ using Application.SendedModel;
 using Library;
 using Library.Class;
 using Library.Plugins.Job;
+using Library.Plugins.ParameterDefinition;
+using Library.Plugins.PropertyDefinition;
 using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.StandardLogger;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Application.JobApplication
@@ -26,13 +29,38 @@ namespace Application.JobApplication
         public void CreateJob(JobConfigModel model)
         {
             Config config = new Config();
+
             config.AddProperty(
                 new DescriptionPropertyDefinition(), 
-                new string[] { 
-                    model.Name,
-                    model.Description
+                new Parameter[] { 
+                    new Parameter() { 
+                        Name = "name", 
+                        Value = model.Name  
+                    },
+                    new Parameter() { 
+                        Name = "description", 
+                        Value = model.Description  
+                    }
                 }
             );
+
+            model.Properties.ForEach(o =>
+            { 
+                List<Parameter> parameters = new List<Parameter>();
+                foreach(JobConfigModel.Property.Parameter p in o.Parameters)
+                {
+                    parameters.Add(new Parameter() { 
+                        Definition = PluginStorage.CreateObject<ParameterDefinition>(p.ClassName),
+                        Name = p.Name, 
+                        Value = p.Value 
+                    });
+                }
+
+                config.AddProperty(
+                    PluginStorage.CreateObject<PropertyDefinition>(o.ClassName),
+                    parameters.ToArray()
+                );
+            });
 
             Job job = PluginStorage.CreateObject<Job>(model.ClassName);
             job.LoadConfig(config);

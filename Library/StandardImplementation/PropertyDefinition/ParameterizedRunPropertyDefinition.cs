@@ -1,4 +1,4 @@
-﻿using Library.Plugins;
+﻿using Library.Plugins.PropertyDefinition;
 
 namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
 {
@@ -6,15 +6,10 @@ namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
     {
         public ParameterizedRunPropertyDefinition()
         {
-            ClassName = "ParameterizedRunProperty";
+            ClassName = "ParameterizedRunPropertyDefinition";
         }
 
         #region PropertyDefinition Implementation
-
-        public override bool VerifyIntegrity(string[] values)
-        {
-            return true;
-        }
 
         #endregion
     }

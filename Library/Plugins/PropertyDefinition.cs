@@ -1,9 +1,8 @@
-﻿using Library.Interface;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Library.Plugins
+namespace Library.Plugins.PropertyDefinition
 {
-    public abstract class PropertyDefinition : IConvertable
+    public abstract class PropertyDefinition
     {
         public string ClassName { get; set; }
 
@@ -18,25 +17,5 @@ namespace Library.Plugins
         {
             ParamDefs.Add(ParamDef);
         }
-
-        public abstract bool VerifyIntegrity(string[] values);
-
-        #region IConvertable
-
-        public string ToJson(bool beautify, int nbTab = 0)
-        {
-            string depthTab = "";
-            for (int i = 0; i < nbTab; i++)
-            {
-                depthTab += "\t";
-            }
-
-            string jsonStr = depthTab + "{\n";
-            jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + ClassName + "\"," + "\n";
-            jsonStr += depthTab + "}";
-            return jsonStr;
-        }
-
-        #endregion
     }
 }

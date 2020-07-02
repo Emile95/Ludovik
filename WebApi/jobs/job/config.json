@@ -1,6 +1,15 @@
 {
 	"_class":"StandardJob",
-	"description":"An standard job",
+	"description":"A standard job",
 	"properties":[
+		{
+			"_class":"NodePropertyDefinition",
+			"parameters":[
+				{
+					"_class":"LabelParameterDefinition",
+					"label":"slave",
+				}
+			]
+		}
 	]
 }

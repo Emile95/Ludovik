@@ -5,9 +5,13 @@ using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Library.Plugins.Node;
 using Library.Plugins.ParameterDefinition;
+using Library.Plugins.PropertyDefinition;
 using Library.StandardImplementation.BoolParameterDefinition;
+using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.LabelParameterDefinition;
+using Library.StandardImplementation.NodePropertyDefinition;
+using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
 using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
 using Library.StandardImplementation.StandardNode;
@@ -43,6 +47,10 @@ namespace WebApi
             PluginStorage.AddPlugin<ParameterDefinition>(typeof(StringParameterDefinition));
             PluginStorage.AddPlugin<ParameterDefinition>(typeof(BoolParameterDefinition));
             PluginStorage.AddPlugin<ParameterDefinition>(typeof(LabelParameterDefinition));
+
+            PluginStorage.AddPlugin<PropertyDefinition>(typeof(DescriptionPropertyDefinition));
+            PluginStorage.AddPlugin<PropertyDefinition>(typeof(ParameterizedRunPropertyDefinition));
+            PluginStorage.AddPlugin<PropertyDefinition>(typeof(NodePropertyDefinition));
 
             PluginStorage.AddPlugin<Logger>(typeof(StandardLogger));
             PluginStorage.AddPlugin<Logger>(typeof(JobBuildLogger));

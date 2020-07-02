@@ -1,7 +1,6 @@
 ﻿using Library.Class;
 using Library.Plugins.Job;
 using Newtonsoft.Json.Linq;
-using System;
 using System.IO;
 using System.Threading;
 
@@ -53,9 +52,10 @@ namespace Library.StandardImplementation.StandardJob
 
             jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
 
-            for (int i = 1; i < Properties.Count; i++)
+            for (int i = 0; i < Properties.Count; i++)
             {
-                jsonStr += Properties[i].Item1.ToJson(true, nbTab + 2);
+                
+                jsonStr += Properties[i].ToJson(true, nbTab + 2);
                 jsonStr += (i < Properties.Count - 1 ? "," : "") + "\n";
             }
 

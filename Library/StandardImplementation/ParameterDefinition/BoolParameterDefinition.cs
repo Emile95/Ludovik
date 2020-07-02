@@ -6,7 +6,7 @@ namespace Library.StandardImplementation.BoolParameterDefinition
     {
         public BoolParameterDefinition()
         {
-            _className = "BoolParameter";
+            ClassName = "BoolParameterDefinition";
         }
 
         public sealed override bool VerifyValue(string value)

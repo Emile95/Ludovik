@@ -1,4 +1,4 @@
-﻿using Library.Plugins;
+﻿using Library.Plugins.PropertyDefinition;
 
 namespace Library.StandardImplementation.DescriptionPropertyDefinition
 {
@@ -6,17 +6,12 @@ namespace Library.StandardImplementation.DescriptionPropertyDefinition
     {
         public DescriptionPropertyDefinition()
         {
-            ClassName = "DescriptionProperty";
+            ClassName = "DescriptionPropertyDefinition";
             ParamDefs.Add(new StringParameterDefinition.StringParameterDefinition() { Name = "name" });
             ParamDefs.Add(new StringParameterDefinition.StringParameterDefinition() { Name = "description" });
         }
 
         #region PropertyDefinition Implementation
-
-        public sealed override bool VerifyIntegrity(string[] values)
-        {
-            return true;
-        }
 
         #endregion
     }

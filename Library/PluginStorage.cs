@@ -2,6 +2,7 @@
 using Library.Plugins.Logger;
 using Library.Plugins.Node;
 using Library.Plugins.ParameterDefinition;
+using Library.Plugins.PropertyDefinition;
 using System;
 using System.Collections.Generic;
 
@@ -15,8 +16,10 @@ namespace Library
         {
             Plugins.Add(typeof(Job), new List<Type>());
             Plugins.Add(typeof(ParameterDefinition), new List<Type>());
+            Plugins.Add(typeof(PropertyDefinition), new List<Type>());
             Plugins.Add(typeof(Logger), new List<Type>());
             Plugins.Add(typeof(Node), new List<Type>());
+
         }
 
         public static void AddPlugin<T>(Type type)
