@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{AAEDA340-69C8-4322-9955-C41184E4B455}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "Library\Library.csproj", "{5A695CA3-B06D-49E8-B6A0-A8DCAFF2FB73}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{5997BF61-5641-4DB3-B883-B50B617E1971}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{D9073390-AC60-4B65-8FEE-ED80D8A81052}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{2767371B-A72B-44A5-BDD6-799004413226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{2767371B-A72B-44A5-BDD6-799004413226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AAEDA340-69C8-4322-9955-C41184E4B455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAEDA340-69C8-4322-9955-C41184E4B455}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAEDA340-69C8-4322-9955-C41184E4B455}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAEDA340-69C8-4322-9955-C41184E4B455}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A695CA3-B06D-49E8-B6A0-A8DCAFF2FB73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A695CA3-B06D-49E8-B6A0-A8DCAFF2FB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A695CA3-B06D-49E8-B6A0-A8DCAFF2FB73}.Release|Any CPU.ActiveCfg = Release|Any CPU

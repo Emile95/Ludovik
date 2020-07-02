@@ -2,9 +2,9 @@
 using System.Reflection;
 using System.Runtime.Loader;
 
-namespace App
+namespace Library.Class
 {
-    class PluginLoadContext : AssemblyLoadContext
+    public class PluginLoadContext : AssemblyLoadContext
     {
         private AssemblyDependencyResolver _resolver;
 
