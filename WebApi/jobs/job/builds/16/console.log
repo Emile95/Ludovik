@@ -1,3 +1,12 @@
-Start at 2020-07-02 10:30:04
+Start at 2020-07-02 11:17:58
 
-End at 2020-07-02 10:30:04
+[windows-batch] : dotnet hihi
+Impossible d'effectuer l'exécution, car la commande ou le fichier spécifié est introuvable.
+Raisons possibles :
+  * Vous avez mal orthographié une commande dotnet intégrée.
+  * Vous aviez l'intention d'exécuter un programme .NET Core, mais dotnet-hihi n'existe pas.
+  * Vous aviez l'intention d'exécuter un outil global, mais l'exécutable portant le nom indiqué précédé de dotnet est introuvable dans le CHEMIN.
+
+
+
+End at 2020-07-02 11:17:58

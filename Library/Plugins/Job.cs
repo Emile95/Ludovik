@@ -148,32 +148,35 @@ namespace Library.Plugins.Job
             Build build = CreateBuild();
             //Create Job Build logger
             JobBuildLogger buildLogger = new JobBuildLogger(Name, build.Number);
+            loggers.AddLogger(buildLogger);
 
             CheckIfBuildCanceled(taskCancelToken,buildLogger);
 
             //Start Execution
+
+            buildLogger.Log(new Log("Start at " + DateTime.Now + "\n"));
 
             //Create the build Environment
             Class.Environment env = new Class.Environment();
 
             Property descriptionProperty = Properties.Single(o => o.Definition is DescriptionPropertyDefinition);
 
-            descriptionProperty.Definition.Apply(env, descriptionProperty.Parameters.ToArray());
+            descriptionProperty.Definition.Apply(env, descriptionProperty.Parameters.ToArray(), loggers);
 
             Properties
                 .Where(o => !(o.Definition is DescriptionPropertyDefinition))
                 .ToList()
-                .ForEach(prop => prop.Definition.Apply(env, prop.Parameters.ToArray()));
+                .ForEach(prop => prop.Definition.Apply(env, prop.Parameters.ToArray(), loggers));
 
             env.Properties.Add("buildNumber", build.Number.ToString());
 
-            buildLogger.Log(new Log("Start at " + DateTime.Now + "\n"));
+            
 
             PreBuild(build, env, taskCancelToken, loggers);
             Build(build, env, taskCancelToken, loggers);
             AfterBuild(build, env, taskCancelToken, loggers);
 
-            buildLogger.Log(new Log("End at " + DateTime.Now));
+            buildLogger.Log(new Log("\nEnd at " + DateTime.Now));
         }
 
         #endregion

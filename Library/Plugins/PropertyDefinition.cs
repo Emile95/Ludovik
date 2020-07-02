@@ -12,7 +12,7 @@ namespace Library.Plugins.PropertyDefinition
 
         #region Abstract Methods
 
-        public abstract void Apply(Environment env, Parameter[] parameters);
+        public abstract void Apply(Environment env, Parameter[] parameters, LoggerList loggers);
 
         #endregion
 

@@ -10,9 +10,9 @@ namespace Library.Class
 
         public List<Parameter> Parameters { get; set; }
 
-        public void Apply(Environment env)
+        public void Apply(Environment env, LoggerList loggers)
         {
-            Definition.Apply(env, Parameters.ToArray());
+            Definition.Apply(env, Parameters.ToArray(), loggers);
         }
 
         #region IConvertable Implementation

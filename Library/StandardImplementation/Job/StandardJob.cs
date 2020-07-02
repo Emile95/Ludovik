@@ -32,7 +32,7 @@ namespace Library.StandardImplementation.StandardJob
         {
             BuildSteps.ForEach(o =>
             {
-                o.Apply(env);
+                o.Apply(env, loggers);
                 CheckIfBuildCanceled(taskCancelToken, loggers.GetLogger<JobBuildLogger.JobBuildLogger>());
             });
         }
