@@ -1,7 +1,5 @@
 ﻿using Library.Class;
 using Library.Plugins.Job;
-using Newtonsoft.Json.Linq;
-using System.IO;
 using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
@@ -63,40 +61,6 @@ namespace Library.StandardImplementation.StandardJob
 
             jsonStr += "}";
             return jsonStr;
-        }
-
-        #endregion
-
-        #region ILoadable implementation
-
-        public sealed override void LoadFromFolder(string path, string folderName)
-        {
-            base.LoadFromFolder(path, folderName);
-
-            string configFile = File.ReadAllText(path + "\\" + folderName + "\\config.json");
-            JObject configFileObject = JObject.Parse(configFile);
-        }
-
-        #endregion
-
-        #region IRepository Implementation
-
-        public sealed override void CreateRepository(string path)
-        {
-            base.CreateRepository(path);
-
-            string dirPath = path + "\\" + Name;
-
-            string configFile = dirPath + "\\config.json";
-
-            using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(File.Create(configFile)))
-            {
-                file.WriteLine(ToJson(true));
-            }
-
-            //Create Builds Directory
-            Directory.CreateDirectory(dirPath+"\\builds");
         }
 
         #endregion

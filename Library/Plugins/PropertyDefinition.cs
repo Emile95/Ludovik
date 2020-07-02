@@ -4,6 +4,8 @@ namespace Library.Plugins.PropertyDefinition
 {
     public abstract class PropertyDefinition
     {
+        #region Properties and Constructor
+
         public string ClassName { get; set; }
 
         public List<ParameterDefinition.ParameterDefinition> ParamDefs { get; protected set; }
@@ -13,9 +15,13 @@ namespace Library.Plugins.PropertyDefinition
             ParamDefs = new List<ParameterDefinition.ParameterDefinition>();
         }
 
-        public void AddParameterDefinition(ParameterDefinition.ParameterDefinition ParamDef)
-        {
-            ParamDefs.Add(ParamDef);
-        }
+        #endregion
+
+        #region Abstract Methods
+
+
+
+        #endregion
+
     }
 }

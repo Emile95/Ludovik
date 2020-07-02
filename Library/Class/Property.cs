@@ -6,13 +6,17 @@ namespace Library.Class
 {
     public class Property : IConvertable
     {
+        #region Properties and Constructor
+
+        public PropertyDefinition Definition { get; set; }
+        public List<Parameter> Parameters { get; set; }
+
         public Property()
         {
             Parameters = new List<Parameter>();
         }
 
-        public PropertyDefinition Definition { get; set; }
-        public List<Parameter> Parameters { get; set; }
+        #endregion
 
         #region IConvertable Implementations
 

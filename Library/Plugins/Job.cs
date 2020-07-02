@@ -86,6 +86,25 @@ namespace Library.Plugins.Job
 
             Name = folderName;
             Description = configFileObject.Value<string>("description");
+
+            JArray propConfigObjects = configFileObject
+                .Value<JArray>("properties");
+
+             foreach(JToken propConfigObject in propConfigObjects)
+             {
+                Property prop = new Property() {
+                    Definition = PluginStorage.CreateObject<PropertyDefinition.PropertyDefinition>(propConfigObject.Value<string>("_className"))
+                };
+                foreach(JToken parameterConfigObject in propConfigObject.Value<JArray>("parameters"))
+                {
+                    prop.Parameters.Add(new Parameter() { 
+                        Definition = PluginStorage.CreateObject<ParameterDefinition.ParameterDefinition>(parameterConfigObject.Value<string>("_className")),
+                        Name = parameterConfigObject.Value<string>("name"),
+                        Value = parameterConfigObject.Value<string>("value")
+                    });
+                }
+                Properties.Add(prop);
+             }
         }
 
         #endregion
@@ -144,6 +163,8 @@ namespace Library.Plugins.Job
 
             CheckIfBuildCanceled(taskCancelToken,buildLogger);
 
+            //Start Execution
+
             buildLogger.Log(new Log("Start at " + DateTime.Now));
 
             PreBuild(build, taskCancelToken, loggers);
@@ -160,7 +181,21 @@ namespace Library.Plugins.Job
         public virtual void CreateRepository(string path)
         {
             Directory.CreateDirectory(path+"\\"+Name);
+
             File.WriteAllText(path + "\\" + Name + "\\nextBuildNumber", "1");
+
+            string dirPath = path + "\\" + Name;
+
+            string configFile = dirPath + "\\config.json";
+
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(File.Create(configFile)))
+            {
+                file.WriteLine(ToJson(true));
+            }
+
+            //Create Builds Directory
+            Directory.CreateDirectory(dirPath + "\\builds");
         }
 
         #endregion
