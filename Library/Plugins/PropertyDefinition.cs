@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Library.Class;
 
 namespace Library.Plugins.PropertyDefinition
 {
@@ -8,18 +8,11 @@ namespace Library.Plugins.PropertyDefinition
 
         public string ClassName { get; set; }
 
-        public List<ParameterDefinition.ParameterDefinition> ParamDefs { get; protected set; }
-
-        public PropertyDefinition()
-        {
-            ParamDefs = new List<ParameterDefinition.ParameterDefinition>();
-        }
-
         #endregion
 
         #region Abstract Methods
 
-
+        public abstract void AddToEnvironment(Environment env, Parameter[] parameters);
 
         #endregion
 

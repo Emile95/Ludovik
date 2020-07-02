@@ -1,4 +1,6 @@
-﻿using Library.Plugins.PropertyDefinition;
+﻿using Library.Class;
+using Library.Plugins.PropertyDefinition;
+using System.Linq;
 
 namespace Library.StandardImplementation.NodePropertyDefinition
 {
@@ -7,10 +9,14 @@ namespace Library.StandardImplementation.NodePropertyDefinition
         public NodePropertyDefinition()
         {
             ClassName = "NodePropertyDefinition";
-            ParamDefs.Add(new LabelParameterDefinition.LabelParameterDefinition());
         }
 
         #region PropertyDefinition Implementation
+
+        public sealed override void AddToEnvironment(Environment env, Parameter[] parameters)
+        {
+            env.Properties.Add("node", parameters.Single(o => o.Name == "label").Value);
+        }
 
         #endregion
     }

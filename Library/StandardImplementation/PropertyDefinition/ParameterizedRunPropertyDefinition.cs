@@ -1,4 +1,5 @@
-﻿using Library.Plugins.PropertyDefinition;
+﻿using Library.Class;
+using Library.Plugins.PropertyDefinition;
 
 namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
 {
@@ -10,6 +11,15 @@ namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
         }
 
         #region PropertyDefinition Implementation
+
+        public sealed override void AddToEnvironment(Environment env, Parameter[] parameters)
+        {
+            foreach(Parameter parameter in parameters)
+            {
+                env.Properties.Add(parameter.Name, parameter.Value);
+            }
+            
+        }
 
         #endregion
     }

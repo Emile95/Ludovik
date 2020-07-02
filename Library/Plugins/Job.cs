@@ -2,6 +2,7 @@
 using Library.Interface;
 using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
+using Library.StandardImplementation.StringParameterDefinition;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -93,18 +94,34 @@ namespace Library.Plugins.Job
              foreach(JToken propConfigObject in propConfigObjects)
              {
                 Property prop = new Property() {
-                    Definition = PluginStorage.CreateObject<PropertyDefinition.PropertyDefinition>(propConfigObject.Value<string>("_className"))
+                    Definition = PluginStorage.CreateObject<PropertyDefinition.PropertyDefinition>(propConfigObject.Value<string>("_class"))
                 };
                 foreach(JToken parameterConfigObject in propConfigObject.Value<JArray>("parameters"))
                 {
                     prop.Parameters.Add(new Parameter() { 
-                        Definition = PluginStorage.CreateObject<ParameterDefinition.ParameterDefinition>(parameterConfigObject.Value<string>("_className")),
+                        Definition = PluginStorage.CreateObject<ParameterDefinition.ParameterDefinition>(parameterConfigObject.Value<string>("_class")),
                         Name = parameterConfigObject.Value<string>("name"),
                         Value = parameterConfigObject.Value<string>("value")
                     });
                 }
                 Properties.Add(prop);
              }
+
+             Properties.Add(new Property() { 
+                Definition = new DescriptionPropertyDefinition(),
+                Parameters = new List<Parameter>() { 
+                    new Parameter() { 
+                        Definition = new StringParameterDefinition() ,
+                        Name = "name",
+                        Value = this.Name
+                    },
+                    new Parameter() {
+                        Definition = new StringParameterDefinition() ,
+                        Name = "description",
+                        Value = this.Description
+                    }
+                }
+             });
         }
 
         #endregion
@@ -142,9 +159,7 @@ namespace Library.Plugins.Job
             Name = descriptionProperty.Parameters[0].Value;
             Description = descriptionProperty.Parameters[1].Value;
 
-            Property[] props = config.GetProperties().Where(o => o.Definition.GetType() != typeof(DescriptionPropertyDefinition)).ToArray();
-
-            foreach (Property prop in props)
+            foreach (Property prop in config.GetProperties())
             {
                 Properties.Add(prop);
             }
@@ -165,7 +180,20 @@ namespace Library.Plugins.Job
 
             //Start Execution
 
-            buildLogger.Log(new Log("Start at " + DateTime.Now));
+            //Create the build Environment
+            Class.Environment env = new Class.Environment();
+            Properties.ForEach(prop => prop.Definition.AddToEnvironment(env, prop.Parameters.ToArray()));
+
+            buildLogger.Log(new Log("Start at " + DateTime.Now + "\n"));
+
+            buildLogger.Log(new Log("Environment : ["));
+
+            foreach (KeyValuePair<string, string> prop in env.Properties)
+            {
+                buildLogger.Log(new Log("\t" + prop.Key + " : " + prop.Value));
+            }
+
+            buildLogger.Log(new Log("]\n"));
 
             PreBuild(build, taskCancelToken, loggers);
             Build(build, taskCancelToken, loggers);

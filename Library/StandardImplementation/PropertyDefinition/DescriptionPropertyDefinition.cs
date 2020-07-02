@@ -1,4 +1,6 @@
-﻿using Library.Plugins.PropertyDefinition;
+﻿using Library.Class;
+using Library.Plugins.PropertyDefinition;
+using System.Linq;
 
 namespace Library.StandardImplementation.DescriptionPropertyDefinition
 {
@@ -7,11 +9,14 @@ namespace Library.StandardImplementation.DescriptionPropertyDefinition
         public DescriptionPropertyDefinition()
         {
             ClassName = "DescriptionPropertyDefinition";
-            ParamDefs.Add(new StringParameterDefinition.StringParameterDefinition() { Name = "name" });
-            ParamDefs.Add(new StringParameterDefinition.StringParameterDefinition() { Name = "description" });
         }
 
         #region PropertyDefinition Implementation
+
+        public sealed override void AddToEnvironment(Environment env, Parameter[] parameters)
+        {
+            env.Properties.Add("name", parameters.Single(o => o.Name == "name").Value);
+        }
 
         #endregion
     }
