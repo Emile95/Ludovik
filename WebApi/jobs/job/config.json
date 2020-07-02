@@ -7,7 +7,7 @@
 			"parameters":[
 				{
 					"_class":"LabelParameterDefinition",
-					"label":"slave",
+					"label":"slave"
 				}
 			]
 		}

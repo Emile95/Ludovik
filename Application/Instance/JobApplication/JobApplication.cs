@@ -15,6 +15,8 @@ namespace Application.JobApplication
 {
     public class JobApplication : IJobApplication
     {
+        #region Properties and Construcotr
+
         private readonly ThreadApplication.ThreadApplication _threadApplication;
 
         public JobApplication(
@@ -24,60 +26,39 @@ namespace Application.JobApplication
             _threadApplication = threadApplication;
         }
 
+        #endregion
+
         #region IJobApplication Implementation
 
         public void CreateJob(JobConfigModel model)
         {
-            Config config = new Config();
-
-            config.AddProperty(
-                new DescriptionPropertyDefinition(), 
-                new Parameter[] { 
-                    new Parameter() { 
-                        Name = "name", 
-                        Value = model.Name  
-                    },
-                    new Parameter() { 
-                        Name = "description", 
-                        Value = model.Description  
-                    }
-                }
-            );
-
-            model.Properties.ForEach(o =>
-            { 
-                List<Parameter> parameters = new List<Parameter>();
-                foreach(JobConfigModel.Property.Parameter p in o.Parameters)
-                {
-                    parameters.Add(new Parameter() { 
-                        Definition = PluginStorage.CreateObject<ParameterDefinition>(p.ClassName),
-                        Name = p.Name, 
-                        Value = p.Value 
-                    });
-                }
-
-                config.AddProperty(
-                    PluginStorage.CreateObject<PropertyDefinition>(o.ClassName),
-                    parameters.ToArray()
-                );
-            });
-
+            //Instanciate plugins depending on class name
             Job job = PluginStorage.CreateObject<Job>(model.ClassName);
-            job.LoadConfig(config);
+
+            //Load job from config
+            job.LoadConfig(model.GetConfig());
+
+            //Create repository configuration in jobs folder
             job.CreateRepository("jobs");
         }
 
         public void RunJob(JobRunModel model)
         {
-            JObject jObject = JObject.Parse(File.ReadAllText("jobs\\" + model.Name + "\\config.json"));
+            //Instanciate plugins depending on class name
+            Job job = PluginStorage.CreateObject<Job>(
+                //Go Fetch class name from config file
+                JObject.Parse(File.ReadAllText("jobs\\" + model.Name + "\\config.json")).Value<string>("_class")
+            );
 
-            Job job = PluginStorage.CreateObject<Job>(jObject.Value<string>("_class"));
-
+            //Load job from folder configuration
             job.LoadFromFolder("jobs", model.Name);
 
+            //Create Logger list for the run
             LoggerList loggers = new LoggerList();
+            //Add Standard logger in the logger list
             loggers.AddLogger(new StandardLogger());
 
+            //Add job build in the process with his name as key and provide log
             _threadApplication.AddRun(model.Name, job, loggers);
         }
 

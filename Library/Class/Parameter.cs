@@ -21,7 +21,7 @@ namespace Library.Class
 
             string jsonStr = depthTab + "{\n";
             jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + Definition.ClassName + "\"," + "\n";
-            jsonStr += depthTab + "\t" + "\"" + Name + "\":" + "\"" + Value + "\"," + "\n";
+            jsonStr += depthTab + "\t" + "\"" + Name + "\":" + "\"" + Value + "\"" + "\n";
 
             jsonStr += depthTab+"}";
 

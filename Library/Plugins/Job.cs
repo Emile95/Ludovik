@@ -30,6 +30,42 @@ namespace Library.Plugins.Job
 
         #endregion
 
+        #region Private Methods
+
+        private Build CreateBuild()
+        {
+            string buildNumberPath = "jobs\\" + Name + "\\nextBuildNumber";
+            string buildNumberStr = File.ReadAllText(buildNumberPath);
+            int buildNumber = Convert.ToInt32(buildNumberStr);
+
+            Build build = new Build(buildNumber++, "#" + buildNumberStr, "");
+
+            //Create Build Repository
+            build.CreateRepository("jobs\\" + Name + "\\builds");
+
+            //Incremente the build in the file
+            File.WriteAllText(buildNumberPath, buildNumber.ToString());
+
+            return build;
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        protected void CheckIfBuildCanceled(CancellationToken taskCancelToken, JobBuildLogger logger, Action action = null)
+        {
+            //Verify if the build was cancelled
+            if (taskCancelToken.IsCancellationRequested)
+            {
+                logger.Log(new Log("Cancelled at " + DateTime.Now));
+                taskCancelToken.ThrowIfCancellationRequested();
+                action();
+            }
+        }
+
+        #endregion
+
         #region Abstract Methods
 
         public abstract void Build(Build build, CancellationToken taskCancelToken, LoggerList loggers);
@@ -101,22 +137,12 @@ namespace Library.Plugins.Job
 
         public void Run(CancellationToken taskCancelToken, LoggerList loggers)
         {
-            string buildNumberPath = "jobs\\" + Name + "\\nextBuildNumber";
-            string buildNumberStr = File.ReadAllText(buildNumberPath);
-            int buildNumber = Convert.ToInt32(buildNumberStr);
-
-            Build build = new Build(buildNumber++, "#"+buildNumberStr,"");
+            //Create Build Object
+            Build build = CreateBuild();
+            //Create Job Build logger
             JobBuildLogger buildLogger = new JobBuildLogger(Name, build.Number);
 
-            build.CreateRepository("jobs\\"+Name+"\\builds");
-
-            File.WriteAllText(buildNumberPath, buildNumber.ToString());
-
-            if(taskCancelToken.IsCancellationRequested)
-            {
-                buildLogger.Log(new Log("Cancelled at " + DateTime.Now));
-                taskCancelToken.ThrowIfCancellationRequested();
-            }
+            CheckIfBuildCanceled(taskCancelToken,buildLogger);
 
             buildLogger.Log(new Log("Start at " + DateTime.Now));
 
@@ -138,6 +164,5 @@ namespace Library.Plugins.Job
         }
 
         #endregion
-
     }
 }
