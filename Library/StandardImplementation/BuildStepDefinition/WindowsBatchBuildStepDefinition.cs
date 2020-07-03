@@ -29,7 +29,9 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             buildLogger.Log(new Log("[windows-batch] : " + command));
             
             Process process = new Process();
-            
+
+            process.StartInfo.FileName = "cmd.exe";
+            process.StartInfo.Arguments = "/c" + command;
             process.StartInfo.WorkingDirectory = directory;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
@@ -42,18 +44,13 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
 
             Node node = new Node() { 
                 WorkSpace = "C:",
-                IpAddress = "machine"
+                IpAddress = "localhost"
             };
 
-            node.Execute(process, command);
+            node.Execute(process);
 
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-
-            process.WaitForExit();
-
-            if (process.ExitCode != 0)
-                failedBuildTokenSource.Failed();
+            /*if (process.ExitCode != 0)
+                failedBuildTokenSource.Failed();*/
         }
 
         #endregion

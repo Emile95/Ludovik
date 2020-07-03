@@ -5,13 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="PsExec.exe" Version="2.11.0" />
-    <PackageReference Include="System.Management" Version="4.7.0" />
+    <Compile Remove="StandardImplementation\Node\**" />
+    <EmbeddedResource Remove="StandardImplementation\Node\**" />
+    <None Remove="StandardImplementation\Node\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="StandardImplementation\Node\" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="PsExec.exe" Version="2.11.0" />
+    <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>
 
 </Project>
