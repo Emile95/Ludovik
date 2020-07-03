@@ -13,14 +13,15 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             ClassName = "WindowsBatchBuildStepDefinition";
         }
 
-        public sealed override void Apply(Environment env, Parameter[] parameters, LoggerList loggers)
+        #region PropertyDefinition Implementations
+
+        public sealed override void Apply(Environment env, Parameter[] parameters, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
             string command = parameters.Single(o => o.Name == "command").Value;
 
             ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
 
-            string directory = Path.Combine(System.Environment.CurrentDirectory, "jobs", env.Properties["name"]);
-            
+            string directory = Path.Combine(System.Environment.CurrentDirectory, "jobs", env.Properties["jobName"]);
 
             JobBuildLogger.JobBuildLogger buildLogger = loggers.GetLogger<JobBuildLogger.JobBuildLogger>();
 
@@ -30,16 +31,23 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             process.StartInfo.FileName = "cmd.exe";
             process.StartInfo.Arguments = "/c " + command;
             process.StartInfo.WorkingDirectory = directory;
-            process.StartInfo.UseShellExecute = false;
+            //process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.OutputDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
-            process.ErrorDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
+            //process.StartInfo.CreateNoWindow = true;
+            process.OutputDataReceived += (sender, args) => { buildLogger.Log(new Log(args.Data)); };
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                failedBuildTokenSource.Failed();
+                buildLogger.Log(new Log(args.Data));
+            };
 
             process.Start();
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             process.WaitForExit();
         }
+
+        #endregion
     }
 }

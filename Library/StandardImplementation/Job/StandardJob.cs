@@ -23,21 +23,22 @@ namespace Library.StandardImplementation.StandardJob
 
         #region Job implementation
 
-        public sealed override void PreBuild(Build build, Environment env, CancellationToken taskCancelToken, LoggerList loggers)
+        public sealed override void PreBuild(Build build, Environment env, CancellationToken taskCancelToken, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
 
         }
 
-        public sealed override void Build(Build build, Environment env, CancellationToken taskCancelToken, LoggerList loggers)
+        public sealed override void Build(Build build, Environment env, CancellationToken taskCancelToken, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
-            BuildSteps.ForEach(o =>
+            foreach(BuildStep step in BuildSteps)
             {
-                o.Apply(env, loggers);
-                CheckIfBuildCanceled(taskCancelToken, loggers.GetLogger<JobBuildLogger.JobBuildLogger>());
-            });
+                step.Apply(env, failedBuildTokenSource, loggers);
+                //CheckIfBuildCanceled(taskCancelToken, loggers.GetLogger<JobBuildLogger.JobBuildLogger>());
+                failedBuildTokenSource.Token.ThrowIfFailed();
+            }
         }
 
-        public sealed override void AfterBuild(Build build, Environment env, CancellationToken taskCancelToken, LoggerList loggers)
+        public sealed override void AfterBuild(Build build, Environment env, CancellationToken taskCancelToken, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
 
         }

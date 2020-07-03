@@ -12,7 +12,7 @@ namespace Library.StandardImplementation.ParameterizedRunPropertyDefinition
 
         #region PropertyDefinition Implementation
 
-        public sealed override void Apply(Environment env, Parameter[] parameters, LoggerList loggers)
+        public sealed override void Apply(Environment env, Parameter[] parameters, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
             foreach(Parameter parameter in parameters)
             {

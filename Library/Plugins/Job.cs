@@ -1,4 +1,5 @@
 ﻿using Library.Class;
+using Library.Exception;
 using Library.Interface;
 using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
@@ -41,7 +42,6 @@ namespace Library.Plugins.Job
 
             Build build = new Build(buildNumber++, "#" + buildNumberStr, "");
 
-            //Create Build Repository
             build.CreateRepository("jobs\\" + Name + "\\builds");
 
             //Incremente the build in the file
@@ -54,14 +54,15 @@ namespace Library.Plugins.Job
 
         #region Protected Methods
 
-        protected void CheckIfBuildCanceled(CancellationToken taskCancelToken, JobBuildLogger logger, Action action = null)
+        protected void CheckIfBuildCanceled(CancellationToken taskCancelToken, Build build, JobBuildLogger logger, Action action = null)
         {
             //Verify if the build was cancelled
             if (taskCancelToken.IsCancellationRequested)
             {
                 logger.Log(new Log("Cancelled at " + DateTime.Now));
-                taskCancelToken.ThrowIfCancellationRequested();
                 action();
+                build.Status = "Cancelled";
+                taskCancelToken.ThrowIfCancellationRequested();
             }
         }
 
@@ -69,11 +70,11 @@ namespace Library.Plugins.Job
 
         #region Abstract Methods
 
-        public abstract void Build(Build build, Class.Environment env, CancellationToken taskCancelToken, LoggerList loggers);
+        public abstract void Build(Build build, Class.Environment env, CancellationToken taskCancelToken, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers);
 
-        public virtual void PreBuild(Build build, Class.Environment env, CancellationToken taskCancelToken, LoggerList loggers) { }
+        public virtual void PreBuild(Build build, Class.Environment env, CancellationToken taskCancelToken, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers) { }
 
-        public virtual void AfterBuild(Build build, Class.Environment env, CancellationToken taskCancelToken, LoggerList loggers) { }
+        public virtual void AfterBuild(Build build, Class.Environment env, CancellationToken taskCancelToken, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers) { }
 
         #endregion
 
@@ -150,33 +151,52 @@ namespace Library.Plugins.Job
             JobBuildLogger buildLogger = new JobBuildLogger(Name, build.Number);
             loggers.AddLogger(buildLogger);
 
-            CheckIfBuildCanceled(taskCancelToken,buildLogger);
-
             //Start Execution
 
             buildLogger.Log(new Log("Start at " + DateTime.Now + "\n"));
 
-            //Create the build Environment
-            Class.Environment env = new Class.Environment();
+            FailedBuildTokenSource failedTokenSource = new FailedBuildTokenSource();
 
-            Property descriptionProperty = Properties.Single(o => o.Definition is DescriptionPropertyDefinition);
+            try
+            {
+                //Create the build Environment
+                Class.Environment env = new Class.Environment();
 
-            descriptionProperty.Definition.Apply(env, descriptionProperty.Parameters.ToArray(), loggers);
+                Property descriptionProperty = Properties.Single(o => o.Definition is DescriptionPropertyDefinition);
 
-            Properties
-                .Where(o => !(o.Definition is DescriptionPropertyDefinition))
-                .ToList()
-                .ForEach(prop => prop.Definition.Apply(env, prop.Parameters.ToArray(), loggers));
+                descriptionProperty.Definition.Apply(env, descriptionProperty.Parameters.ToArray(), failedTokenSource, loggers);
 
-            env.Properties.Add("buildNumber", build.Number.ToString());
+                List<Property> props = Properties
+                    .Where(o => !(o.Definition is DescriptionPropertyDefinition))
+                    .ToList();
 
-            
+                foreach(Property prop in props)
+                {
+                    prop.Definition.Apply(env, prop.Parameters.ToArray(), failedTokenSource, loggers);
+                    CheckIfBuildCanceled(taskCancelToken,build,buildLogger);
+                    //failedTokenSource.Token.ThrowIfFailed();
+                }
 
-            PreBuild(build, env, taskCancelToken, loggers);
-            Build(build, env, taskCancelToken, loggers);
-            AfterBuild(build, env, taskCancelToken, loggers);
+                env.Properties.Add("buildNumber", build.Number.ToString());
 
-            buildLogger.Log(new Log("\nEnd at " + DateTime.Now));
+                PreBuild(build, env, taskCancelToken, failedTokenSource, loggers);
+                Build(build, env, taskCancelToken, failedTokenSource, loggers);
+                AfterBuild(build, env, taskCancelToken, failedTokenSource, loggers);
+
+                buildLogger.Log(new Log("\nBUILD SUCCESS"));
+                buildLogger.Log(new Log("\nEnd at " + DateTime.Now));
+
+                build.Status = "SUCCESS";
+            }
+            catch(OperationCanceledException e)
+            {
+                throw e;
+            }
+            catch(FailedBuildException e)
+            {
+                build.Status = "FAILED";
+                buildLogger.Log(new Log("BUILD FAILED"));
+            }
         }
 
         #endregion

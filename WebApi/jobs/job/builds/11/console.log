@@ -1,5 +1,14 @@
-Start at 2020-07-02 11:11:32
+Start at 2020-07-03 00:28:03
 
-[windows-batch] : dotnet hihi
+[windows-batch] : dotnet huhoho
+Impossible d'effectuer l'exécution, car la commande ou le fichier spécifié est introuvable.
+Raisons possibles :
+  * Vous avez mal orthographié une commande dotnet intégrée.
+  * Vous aviez l'intention d'exécuter un programme .NET Core, mais dotnet-huhoho n'existe pas.
+  * Vous aviez l'intention d'exécuter un outil global, mais l'exécutable portant le nom indiqué précédé de dotnet est introuvable dans le CHEMIN.
 
-End at 2020-07-02 11:11:33
+
+
+BUILD SUCCESS
+
+End at 2020-07-03 00:28:03

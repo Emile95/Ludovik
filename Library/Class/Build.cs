@@ -5,16 +5,18 @@ namespace Library.Class
 {
     public class Build : IRepository
     {
-        public Build(int number,string name, string description)
+        public int Number { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string Status { get; set; }
+
+        public Build(int number, string name, string description)
         {
             Number = number;
             Name = name;
             Description = description;
+            Status = "Building";
         }
-
-        public int Number { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
 
         public void CreateRepository(string path)
         {

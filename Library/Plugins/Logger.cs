@@ -10,10 +10,17 @@ namespace Library.Plugins.Logger
 
         public void Log(Log log, string partialPath = null)
         {
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(GetFilePath(), true))
+            bool repeat = true;
+            while (repeat)
             {
-                file.WriteLine(GetLogLine(log));
+                try
+                {
+                    System.IO.StreamWriter file = new System.IO.StreamWriter(GetFilePath(), true);
+                    file.WriteLine(GetLogLine(log));
+                    file.Close();
+                    repeat = false;
+                }
+                catch(System.Exception e) { }
             }
         }
     }
