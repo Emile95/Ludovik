@@ -20,7 +20,7 @@
 				{
 					"_class":"StringParameterDefinition",
 					"name":"command",
-					"value":"dotnet asdasdasd"
+					"value":"mkdir %JOBNAME%_%BUILDNUMBER%"
 				}
 			]
 		}

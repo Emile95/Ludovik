@@ -1,5 +1,6 @@
 ﻿using Library.Class;
 using Library.Plugins.BuildStepDefinition;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -34,9 +35,11 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            //process.StartInfo.CreateNoWindow = true;
             process.OutputDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
             process.ErrorDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
+
+            foreach(KeyValuePair<string, string> prop in env.Properties)
+                process.StartInfo.Environment.Add(prop.Key.ToUpper(),prop.Value);
 
             process.Start();
 

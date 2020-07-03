@@ -119,7 +119,7 @@ namespace Library.Plugins.Job
                 {
                     prop.Definition.Apply(env, prop.Parameters.ToArray(), failedTokenSource, loggers);
                     CheckIfBuildCanceled(taskCancelToken,build,buildLogger);
-                    //failedTokenSource.Token.ThrowIfFailed();
+                    failedTokenSource.Token.ThrowIfFailed();
                 }
 
                 env.Properties.Add("buildNumber", build.Number.ToString());
@@ -141,6 +141,7 @@ namespace Library.Plugins.Job
             {
                 build.Status = "FAILED";
                 buildLogger.Log(new Log("BUILD FAILED"));
+                buildLogger.Log(new Log("\nEnd at " + DateTime.Now));
             }
         }
 
