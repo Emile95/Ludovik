@@ -20,7 +20,7 @@
 				{
 					"_class":"StringParameterDefinition",
 					"name":"command",
-					"value":"mkdir %JOBNAME%_%BUILDNUMBER%"
+					"value":"echo hihi"
 				}
 			]
 		}

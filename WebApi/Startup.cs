@@ -16,7 +16,6 @@ using Library.StandardImplementation.NodePropertyDefinition;
 using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
 using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
-using Library.StandardImplementation.StandardNode;
 using Library.StandardImplementation.StringParameterDefinition;
 using Library.StandardImplementation.WindowsBatchBuildStepDefinition;
 using Microsoft.AspNetCore.Builder;
@@ -107,8 +106,6 @@ namespace WebApi
 
             PluginStorage.AddPlugin<Logger>(typeof(StandardLogger));
             PluginStorage.AddPlugin<Logger>(typeof(JobBuildLogger));
-
-            PluginStorage.AddPlugin<Node>(typeof(StandardNode));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

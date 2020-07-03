@@ -27,10 +27,9 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             JobBuildLogger.JobBuildLogger buildLogger = loggers.GetLogger<JobBuildLogger.JobBuildLogger>();
 
             buildLogger.Log(new Log("[windows-batch] : " + command));
-
+            
             Process process = new Process();
-            process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = "/c " + command;
+            
             process.StartInfo.WorkingDirectory = directory;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
@@ -41,14 +40,19 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             foreach(KeyValuePair<string, string> prop in env.Properties)
                 process.StartInfo.Environment.Add(prop.Key.ToUpper(),prop.Value);
 
-            process.Start();
+            Node node = new Node() { 
+                WorkSpace = "C:",
+                IpAddress = "machine"
+            };
+
+            node.Execute(process, command);
 
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
 
             process.WaitForExit();
 
-            if(process.ExitCode != 0)
+            if (process.ExitCode != 0)
                 failedBuildTokenSource.Failed();
         }
 

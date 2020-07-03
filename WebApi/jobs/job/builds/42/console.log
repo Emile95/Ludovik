@@ -1,0 +1,14 @@
+Start at 2020-07-03 02:12:57
+
+[windows-batch] : echo hihi
+
+PsExec v2.2 - Execute processes remotely
+Copyright (C) 2001-2016 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+cmd.exe exited with error code -1073741510.
+
+
+BUILD FAILED
+
+End at 2020-07-03 02:13:01
