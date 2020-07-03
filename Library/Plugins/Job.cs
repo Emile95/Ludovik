@@ -1,14 +1,10 @@
 ﻿using Library.Class;
 using Library.Exception;
 using Library.Interface;
-using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
-using Library.StandardImplementation.StringParameterDefinition;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 
 namespace Library.Plugins.Job
@@ -80,50 +76,7 @@ namespace Library.Plugins.Job
 
         #region ILoadable implementation
 
-        public virtual void LoadFromFolder(string path, string folderName)
-        {
-            //Config.json object
-            string configFile = File.ReadAllText(path + "\\" + folderName + "\\config.json");
-            JObject configFileObject = JObject.Parse(configFile);
-
-            Name = folderName;
-            Description = configFileObject.Value<string>("description");
-
-            JArray propConfigObjects = configFileObject
-                .Value<JArray>("properties");
-
-             foreach(JToken propConfigObject in propConfigObjects)
-             {
-                Property prop = new Property() {
-                    Definition = PluginStorage.CreateObject<PropertyDefinition.PropertyDefinition>(propConfigObject.Value<string>("_class"))
-                };
-                foreach(JToken parameterConfigObject in propConfigObject.Value<JArray>("parameters"))
-                {
-                    prop.Parameters.Add(new Parameter() { 
-                        Definition = PluginStorage.CreateObject<ParameterDefinition.ParameterDefinition>(parameterConfigObject.Value<string>("_class")),
-                        Name = parameterConfigObject.Value<string>("name"),
-                        Value = parameterConfigObject.Value<string>("value")
-                    });
-                }
-                Properties.Add(prop);
-             }
-
-             Properties.Add(new Property() { 
-                Definition = new DescriptionPropertyDefinition(),
-                Parameters = new List<Parameter>() { 
-                    new Parameter() { 
-                        Definition = new StringParameterDefinition() ,
-                        Name = "name",
-                        Value = this.Name
-                    },
-                    new Parameter() {
-                        Definition = new StringParameterDefinition() ,
-                        Name = "description",
-                        Value = this.Description
-                    }
-                }
-             });
-        }
+        public abstract void LoadFromFolder(string path, string folderName);
 
         #endregion
 
@@ -162,15 +115,7 @@ namespace Library.Plugins.Job
                 //Create the build Environment
                 Class.Environment env = new Class.Environment();
 
-                Property descriptionProperty = Properties.Single(o => o.Definition is DescriptionPropertyDefinition);
-
-                descriptionProperty.Definition.Apply(env, descriptionProperty.Parameters.ToArray(), failedTokenSource, loggers);
-
-                List<Property> props = Properties
-                    .Where(o => !(o.Definition is DescriptionPropertyDefinition))
-                    .ToList();
-
-                foreach(Property prop in props)
+                foreach(Property prop in Properties)
                 {
                     prop.Definition.Apply(env, prop.Parameters.ToArray(), failedTokenSource, loggers);
                     CheckIfBuildCanceled(taskCancelToken,build,buildLogger);

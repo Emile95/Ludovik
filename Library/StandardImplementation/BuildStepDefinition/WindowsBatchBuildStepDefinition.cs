@@ -31,21 +31,22 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             process.StartInfo.FileName = "cmd.exe";
             process.StartInfo.Arguments = "/c " + command;
             process.StartInfo.WorkingDirectory = directory;
-            //process.StartInfo.UseShellExecute = false;
+            process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
             //process.StartInfo.CreateNoWindow = true;
-            process.OutputDataReceived += (sender, args) => { buildLogger.Log(new Log(args.Data)); };
-            process.ErrorDataReceived += (sender, args) =>
-            {
-                failedBuildTokenSource.Failed();
-                buildLogger.Log(new Log(args.Data));
-            };
+            process.OutputDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
+            process.ErrorDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
 
             process.Start();
+
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
+
             process.WaitForExit();
+
+            if(process.ExitCode != 0)
+                failedBuildTokenSource.Failed();
         }
 
         #endregion

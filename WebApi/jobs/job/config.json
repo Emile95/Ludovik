@@ -12,15 +12,17 @@
 				}
 			]
 		},
+	],
+	"buildSteps":[
 		{
 			"_class":"WindowsBatchBuildStepDefinition",
 			"parameters":[
 				{
 					"_class":"StringParameterDefinition",
 					"name":"command",
-					"value":"dotnet huhoho"
+					"value":"dotnet asdasdasd"
 				}
 			]
 		}
-	]
+	],
 }

@@ -10,6 +10,11 @@ namespace Library.Class
 
         public List<Parameter> Parameters { get; set; }
 
+        public BuildStep()
+        {
+            Parameters = new List<Parameter>();
+        }
+
         public void Apply(Environment env, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
             Definition.Apply(env, Parameters.ToArray(), failedBuildTokenSource, loggers);
