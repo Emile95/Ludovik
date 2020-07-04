@@ -17,12 +17,35 @@ namespace Library.Class.Node
         public string WorkSpace { get; set; }
 
         private Socket _clientSocket;
+        private byte[] _buffer;
 
         public Node(string host)
         {
             Host = host;
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _clientSocket.Connect(IPAddress.Parse(Host), 100);
+
+            _buffer = new byte[1024];
+            _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, (result) => {
+                
+            }, _clientSocket);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void ReceiveCallBack(IAsyncResult result)
+        {
+            int nbByte = _clientSocket.EndReceive(result);
+            byte[] buffer = new byte[nbByte];
+            Array.Copy(
+                _buffer,
+                buffer,
+                nbByte
+            );
+
+            _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, ReceiveCallBack, _clientSocket);
         }
 
         #endregion
@@ -37,11 +60,16 @@ namespace Library.Class.Node
                 bf.Serialize(memorystream, consoleLog);
                 _clientSocket.Send(memorystream.ToArray());
             }
-            
+        }
 
-            /*_clientSocket.BeginReceive(received, 0 , received.Length, SocketFlags.None, (result) => { 
-                
-            }, _clientSocket);*/
+        public void RunProcess(ProcessRunInfo processRunInfo)
+        {
+            using (MemoryStream memorystream = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(memorystream, processRunInfo);
+                _clientSocket.Send(memorystream.ToArray());
+            }
         }
 
         #endregion
