@@ -1,3 +1,4 @@
+using Application.Instance.NodeApplication;
 using Application.JobApplication;
 using Application.ThreadApplication;
 using Library;
@@ -87,6 +88,7 @@ namespace WebApi
             services.AddControllers();
 
             services.AddSingleton<ThreadApplication>();
+            services.AddSingleton<NodeApplication>();
 
             services.AddScoped<IJobApplication, JobApplication>();
 

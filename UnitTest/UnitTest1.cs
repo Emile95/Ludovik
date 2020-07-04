@@ -1,12 +1,8 @@
-using Library.Class;
-using Library.Plugins;
-using Library.Plugins.Job;
-using Library.StandardImplementation.DescriptionPropertyDefinition;
-using Library.StandardImplementation.LabelParameterDefinition;
-using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
-using Library.StandardImplementation.StandardJob;
-using Library.StandardImplementation.StringParameterDefinition;
+using Library.Class.Node;
+using Library.Class.Node.Encodable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+
 
 namespace UnitTest
 {
@@ -16,16 +12,10 @@ namespace UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-            Config config = new Config();
-
-            config.AddProperty(new DescriptionPropertyDefinition(), new string[] { "job1", "standard job" });
-
-            Job job = new StandardJob();
-            job.LoadConfig(config);
-
-            job.CreateRepository("jobs");
-
-            Assert.AreEqual(job.Name,"job1");
+            Node node = new Node("127.0.0.1");
+            node.ConsoleLog(new ConsoleLog() { 
+                Log = "hihohoho"
+            });
         }
     }
 }

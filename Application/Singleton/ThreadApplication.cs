@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.ThreadApplication
 {
-    public class ThreadApplication : IThreadApplication
+    public class ThreadApplication
     {
         private readonly Dictionary<string, System.Timers.Timer> _intervals;
         private readonly Dictionary<string, IRunnable> _runs;
@@ -21,8 +21,6 @@ namespace Application.ThreadApplication
             _runs = new Dictionary<string, IRunnable>();
             _tokens = new Dictionary<string, CancellationTokenSource>();
         }
-
-        #region IThreadApplication
 
         public void AddInterval(string key, int sec, Action action)
         {
@@ -88,7 +86,5 @@ namespace Application.ThreadApplication
             }
             return runs.ToArray();
         }
-
-        #endregion
     }
 }

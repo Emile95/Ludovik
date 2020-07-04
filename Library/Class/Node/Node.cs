@@ -1,46 +1,87 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Library.Encodable;
+using Library.Interface;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Library.Class
+namespace Library.Class.Node
 {
-    public class Node : IDisposable
+    public class Node : IConvertable, IRepository
     {
-        public string IpAddress { get; set; }
+        #region Properties and Constructor
+
+        public string Name { get; set; }
+        public string Host { get; set; }
         public string WorkSpace { get; set; }
+
         private Socket _clientSocket;
 
-        public Node(string ipAddress, string workspace)
+        public Node(string host)
         {
-            IpAddress = ipAddress;
-            WorkSpace = workspace;
-
+            Host = host;
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _clientSocket.Connect(IPAddress.Parse(IpAddress), 100);
+            _clientSocket.Connect(IPAddress.Parse(Host), 100);
         }
 
-        public void Execute(Process process)
+        #endregion
+
+        #region Public Methods
+
+        public void ConsoleLog(ConsoleLog consoleLog)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream memorystream = new MemoryStream())
             {
-                //bf.Serialize(ms, process);
-                _clientSocket.Send(new byte[] { 1, 2 });
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(memorystream, consoleLog);
+                _clientSocket.Send(memorystream.ToArray());
+            }
+            
+
+            /*_clientSocket.BeginReceive(received, 0 , received.Length, SocketFlags.None, (result) => { 
+                
+            }, _clientSocket);*/
+        }
+
+        #endregion
+
+        #region IConvertable Implementations
+
+        public string ToJson(bool beautify, int nbTab = 0)
+        {
+            string depthTab = "";
+            for (int i = 0; i < nbTab; i++)
+            {
+                depthTab += "\t";
             }
 
-            byte[] received = new byte[1024];
+            string jsonStr = depthTab + "{\n";
+            jsonStr += depthTab + "\t" + "\"host\":" + "\"" + Host + "\"," + "\n";
+            jsonStr += depthTab + "\t" + "\"workspace\":" + "\"" + WorkSpace + "\"," + "\n";
+            jsonStr += "}";
 
-            _clientSocket.BeginReceive(received, 0 , received.Length, SocketFlags.None, (result) => { 
-                
-            }, _clientSocket);
+            return jsonStr;
         }
 
-        public void Dispose()
+        #endregion
+
+        #region IRepository Implementations
+
+        public void CreateRepository(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IRepository Implementations
+
+        public void Close()
         {
             _clientSocket.Close();
         }
+
+        #endregion
     }
 }
