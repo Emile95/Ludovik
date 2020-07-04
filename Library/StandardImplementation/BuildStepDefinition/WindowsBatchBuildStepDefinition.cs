@@ -42,12 +42,9 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             foreach(KeyValuePair<string, string> prop in env.Properties)
                 process.StartInfo.Environment.Add(prop.Key.ToUpper(),prop.Value);
 
-            Node node = new Node() { 
-                WorkSpace = "C:",
-                IpAddress = "localhost"
-            };
+            //Node node = new Node("127.0.0.1"," C:\\");
 
-            node.Execute(process);
+            //node.Execute(process);
 
             /*if (process.ExitCode != 0)
                 failedBuildTokenSource.Failed();*/
