@@ -1,4 +1,5 @@
 ﻿using Library.Class;
+using Library.Class.Node;
 using Library.Exception;
 using Library.Interface;
 using Library.StandardImplementation.JobBuildLogger;
@@ -20,6 +21,8 @@ namespace Library.Plugins.Job
         public string Description { get; set; }
 
         public List<Property> Properties { get; set; }
+
+        public Node Node { get; set; }
 
         public Job()
         {
@@ -117,7 +120,7 @@ namespace Library.Plugins.Job
 
                 foreach(Property prop in Properties)
                 {
-                    prop.Definition.Apply(env, prop.Parameters.ToArray(), failedTokenSource, loggers);
+                    prop.Definition.Apply(env, prop.Parameters.ToArray(), Node, failedTokenSource, loggers);
                     CheckIfBuildCanceled(taskCancelToken,build,buildLogger);
                     failedTokenSource.Token.ThrowIfFailed();
                 }

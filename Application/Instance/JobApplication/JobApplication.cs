@@ -3,12 +3,8 @@ using Application.SendedModel;
 using Library;
 using Library.Class;
 using Library.Plugins.Job;
-using Library.Plugins.ParameterDefinition;
-using Library.Plugins.PropertyDefinition;
-using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.StandardLogger;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Application.JobApplication
@@ -18,12 +14,15 @@ namespace Application.JobApplication
         #region Properties and Construcotr
 
         private readonly ThreadApplication.ThreadApplication _threadApplication;
+        private readonly NodeApplication.NodeApplication _nodeApplication;
 
         public JobApplication(
-            ThreadApplication.ThreadApplication threadApplication
+            ThreadApplication.ThreadApplication threadApplication,
+            NodeApplication.NodeApplication nodeApplication
         )
         {
             _threadApplication = threadApplication;
+            _nodeApplication = nodeApplication;
         }
 
         #endregion
@@ -52,6 +51,8 @@ namespace Application.JobApplication
 
             //Load job from folder configuration
             job.LoadFromFolder("jobs", model.Name);
+
+            job.Node = _nodeApplication.GetNode(job.GetType().GetProperty("Label").GetValue(job) as string);
 
             //Create Logger list for the run
             LoggerList loggers = new LoggerList();

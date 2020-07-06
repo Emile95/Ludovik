@@ -1,7 +1,4 @@
-﻿using Application.Instance.NodeApplication;
-using Application.JobApplication;
-using Application.JobApplication.PostModel;
-using Application.SendedModel;
+﻿using Application.NodeApplication;
 using Application.Singleton.NodeApplication.SendedModel;
 using Microsoft.AspNetCore.Mvc;
 

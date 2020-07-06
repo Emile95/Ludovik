@@ -15,9 +15,9 @@ namespace Library.Class
             Parameters = new List<Parameter>();
         }
 
-        public void Apply(Environment env, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
+        public void Apply(Environment env, Node.Node node, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
-            Definition.Apply(env, Parameters.ToArray(), failedBuildTokenSource, loggers);
+            Definition.Apply(env, Parameters.ToArray(), node, failedBuildTokenSource, loggers);
         }
 
         #region IConvertable Implementation

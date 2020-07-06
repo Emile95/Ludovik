@@ -1,6 +1,6 @@
 ﻿using Library.Class;
+using Library.Class.Job;
 using Library.Plugins.BuildStepDefinition;
-using Library.Plugins.Job;
 using Library.Plugins.ParameterDefinition;
 using Library.Plugins.PropertyDefinition;
 using Newtonsoft.Json.Linq;
@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Library.StandardImplementation.StandardJob
 {
-    public class StandardJob : Job
+    public class StandardJob : BuildableJob
     {
         #region Properties and Constructor
 
@@ -36,7 +36,7 @@ namespace Library.StandardImplementation.StandardJob
         {
             foreach(BuildStep step in BuildSteps)
             {
-                step.Apply(env, failedBuildTokenSource, loggers);
+                step.Apply(env, Node, failedBuildTokenSource, loggers);
                 CheckIfBuildCanceled(taskCancelToken, build, loggers.GetLogger<JobBuildLogger.JobBuildLogger>());
                 failedBuildTokenSource.Token.ThrowIfFailed();
             }
@@ -59,6 +59,7 @@ namespace Library.StandardImplementation.StandardJob
 
             Name = folderName;
             Description = configFileObject.Value<string>("description");
+            Label = configFileObject.Value<string>("label");
 
             JArray propConfigObjects = configFileObject
                 .Value<JArray>("properties");
@@ -137,6 +138,7 @@ namespace Library.StandardImplementation.StandardJob
             string jsonStr = depthTab + "{\n";
             jsonStr += depthTab + "\t" + "\"_class\":" + "\"" + ClassName + "\"," + "\n";
             jsonStr += depthTab + "\t" + "\"description\":" + "\"" + Description + "\"," + "\n";
+            jsonStr += depthTab + "\t" + "\"label\":" + "\"" + Label + "\"," + "\n";
 
             jsonStr += depthTab + "\t" + "\"properties\":" + "[\n";
 
@@ -178,7 +180,11 @@ namespace Library.StandardImplementation.StandardJob
             Name = property.Parameters[0].Value;
             Description = property.Parameters[1].Value;
 
-            foreach(Property prop in config.Props.Where(o => !(o.Definition is BuildStepDefinition)))
+            property = config.GetProperties<NodePropertyDefinition.NodePropertyDefinition>()[0];
+
+            Label = property.Parameters[0].Value;
+
+            foreach (Property prop in config.Props.Where(o => !(o.Definition is BuildStepDefinition)))
                 Properties.Add(prop);
             
             config.GetProperties<BuildStepDefinition>().ForEach(o => {

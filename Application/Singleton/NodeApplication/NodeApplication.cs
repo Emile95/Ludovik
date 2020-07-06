@@ -3,7 +3,7 @@ using Application.Singleton.NodeApplication.SendedModel;
 using Library.Class.Node;
 using Library.Encodable;
 
-namespace Application.Instance.NodeApplication
+namespace Application.NodeApplication
 {
     public class NodeApplication
     {
@@ -22,8 +22,9 @@ namespace Application.Instance.NodeApplication
 
         public void ConnectNode(NodeConnectionModel model) 
         {
-            Node node = new Node("127.0.0.1");
-            //_connectedNodes.Add(model.Name, node);
+            Node node = new Node("127.0.0.1", 300);
+            _connectedNodes.Add(model.Name, node);
+           
             node.ConsoleLog(new ConsoleLog()
             {
                 log = "Server connteced with " + model.Name + " has node name"
@@ -34,6 +35,11 @@ namespace Application.Instance.NodeApplication
         {
             _connectedNodes[model.Name].Close();
             _connectedNodes.Remove(model.Name);
+        }
+
+        public Node GetNode(string name)
+        {
+            return _connectedNodes[name];
         }
 
         #endregion

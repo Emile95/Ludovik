@@ -1,4 +1,5 @@
 ﻿using Library.Class;
+using Library.Class.Node;
 
 namespace Library.Plugins.PropertyDefinition
 {
@@ -12,7 +13,7 @@ namespace Library.Plugins.PropertyDefinition
 
         #region Abstract Methods
 
-        public abstract void Apply(Environment env, Parameter[] parameters, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers);
+        public abstract void Apply(Environment env, Parameter[] parameters, Node node, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers);
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Library.Class;
+using Library.Class.Node;
 using Library.Plugins.BuildStepDefinition;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
 
         #region PropertyDefinition Implementations
 
-        public sealed override void Apply(Environment env, Parameter[] parameters, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
+        public sealed override void Apply(Environment env, Parameter[] parameters, Node node, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
             string command = parameters.Single(o => o.Name == "command").Value;
 
@@ -27,27 +28,19 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
             JobBuildLogger.JobBuildLogger buildLogger = loggers.GetLogger<JobBuildLogger.JobBuildLogger>();
 
             buildLogger.Log(new Log("[windows-batch] : " + command));
-            
-            Process process = new Process();
 
-            process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = "/c" + command;
-            process.StartInfo.WorkingDirectory = directory;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.OutputDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
-            process.ErrorDataReceived += (sender, args) => buildLogger.Log(new Log(args.Data));
+            Encodable.ProcessRunInfo info = new Encodable.ProcessRunInfo()
+            {
+                fileName = "cmd.exe",
+                args = "/c" + command,
+                workingDirectory = env.Properties["jobName"]
+            };
 
-            foreach(KeyValuePair<string, string> prop in env.Properties)
-                process.StartInfo.Environment.Add(prop.Key.ToUpper(),prop.Value);
+            /*
+            foreach (KeyValuePair<string, string> prop in env.Properties)
+                info.environment.Add(prop.Key.ToUpper(), prop.Value);*/
 
-            //Node node = new Node("127.0.0.1"," C:\\");
-
-            //node.Execute(process);
-
-            /*if (process.ExitCode != 0)
-                failedBuildTokenSource.Failed();*/
+            node.RunProcess(info);
         }
 
         #endregion

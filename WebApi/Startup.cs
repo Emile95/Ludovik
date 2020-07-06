@@ -1,5 +1,5 @@
-using Application.Instance.NodeApplication;
 using Application.JobApplication;
+using Application.NodeApplication;
 using Application.ThreadApplication;
 using Library;
 using Library.Class;

@@ -19,16 +19,15 @@ namespace Library.Class.Node
         private Socket _clientSocket;
         private byte[] _buffer;
 
-        public Node(string host)
+        public Node(string host, int port)
         {
             Host = host;
+            WorkSpace = "C:\\LudovikWorkspace";
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _clientSocket.Connect(IPAddress.Parse(Host), 100);
+            _clientSocket.Connect(IPAddress.Parse(Host), port);
 
             _buffer = new byte[1024];
-            _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, (result) => {
-                
-            }, _clientSocket);
+            _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, ReceiveCallBack, _clientSocket);
         }
 
         #endregion
@@ -37,7 +36,9 @@ namespace Library.Class.Node
 
         private void ReceiveCallBack(IAsyncResult result)
         {
+            //Nb of Byte of result
             int nbByte = _clientSocket.EndReceive(result);
+            //Result Data
             byte[] buffer = new byte[nbByte];
             Array.Copy(
                 _buffer,
@@ -48,28 +49,29 @@ namespace Library.Class.Node
             _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, ReceiveCallBack, _clientSocket);
         }
 
+        private void SendData<T>(T data)
+        {
+            using (MemoryStream memorystream = new MemoryStream())
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(memorystream, data);
+                _clientSocket.Send(memorystream.ToArray());
+            }
+        }
+
         #endregion
 
         #region Public Methods
 
         public void ConsoleLog(ConsoleLog consoleLog)
         {
-            using (MemoryStream memorystream = new MemoryStream())
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(memorystream, consoleLog);
-                _clientSocket.Send(memorystream.ToArray());
-            }
+            SendData(consoleLog);
         }
 
         public void RunProcess(ProcessRunInfo processRunInfo)
         {
-            using (MemoryStream memorystream = new MemoryStream())
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(memorystream, processRunInfo);
-                _clientSocket.Send(memorystream.ToArray());
-            }
+            processRunInfo.workingDirectory = WorkSpace += "\\" + processRunInfo.workingDirectory;
+            SendData(processRunInfo);
         }
 
         #endregion

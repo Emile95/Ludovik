@@ -1,3 +1,7 @@
-Start at 2020-07-04 00:00:41
+Start at 2020-07-05 18:09:16
 
-[windows-batch] : echo hihi
+[windows-batch] : echo 5 > hihi.txt
+
+BUILD SUCCESS
+
+End at 2020-07-05 18:09:16

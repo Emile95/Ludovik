@@ -1,6 +1,7 @@
 {
 	"_class":"StandardJob",
 	"description":"A standard job",
+	"label":"slave",
 	"properties":[
 		{
 			"_class":"NodePropertyDefinition",
@@ -20,7 +21,7 @@
 				{
 					"_class":"StringParameterDefinition",
 					"name":"command",
-					"value":"echo hihi"
+					"value":"echo 5 > hihi.txt"
 				}
 			]
 		}
