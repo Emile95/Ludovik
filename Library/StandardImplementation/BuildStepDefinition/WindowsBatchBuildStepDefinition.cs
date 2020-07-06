@@ -2,8 +2,6 @@
 using Library.Class.Node;
 using Library.Plugins.BuildStepDefinition;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
@@ -21,10 +19,6 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
         {
             string command = parameters.Single(o => o.Name == "command").Value;
 
-            ProcessStartInfo processInfo = new ProcessStartInfo("cmd.exe", "/c " + command);
-
-            string directory = Path.Combine(System.Environment.CurrentDirectory, "jobs", env.Properties["jobName"]);
-
             JobBuildLogger.JobBuildLogger buildLogger = loggers.GetLogger<JobBuildLogger.JobBuildLogger>();
 
             buildLogger.Log(new Log("[windows-batch] : " + command));
@@ -36,9 +30,10 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
                 workingDirectory = env.Properties["jobName"]
             };
 
-            /*
             foreach (KeyValuePair<string, string> prop in env.Properties)
-                info.environment.Add(prop.Key.ToUpper(), prop.Value);*/
+                info.vars += prop.Key.ToUpper() + ":" + prop.Value + ",";
+
+            info.vars = info.vars.Substring(0, info.vars.Length - 1);
 
             node.RunProcess(info);
         }

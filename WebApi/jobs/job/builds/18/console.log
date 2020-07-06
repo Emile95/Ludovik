@@ -1,7 +1,7 @@
-Start at 2020-07-05 23:05:26
+Start at 2020-07-06 00:25:18
 
-[windows-batch] : echo 5 > hihi.txt
+[windows-batch] : mkdir hiho
 
 BUILD SUCCESS
 
-End at 2020-07-05 23:05:27
+End at 2020-07-06 00:25:18

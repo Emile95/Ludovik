@@ -16,7 +16,7 @@ namespace Library.StandardImplementation.DescriptionPropertyDefinition
 
         public sealed override void Apply(Environment env, Parameter[] parameters, Node node, FailedBuildTokenSource failedBuildTokenSource, LoggerList loggers)
         {
-            env.Properties.Add("jobName", parameters.Single(o => o.Name == "name").Value);
+            
         }
 
         #endregion

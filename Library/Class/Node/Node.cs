@@ -70,7 +70,7 @@ namespace Library.Class.Node
 
         public void RunProcess(ProcessRunInfo processRunInfo)
         {
-            processRunInfo.workingDirectory = WorkSpace += "\\" + processRunInfo.workingDirectory;
+            processRunInfo.workingDirectory = WorkSpace + "\\" + processRunInfo.workingDirectory;
             SendData(processRunInfo);
         }
 

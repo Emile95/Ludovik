@@ -101,11 +101,16 @@ namespace Library.Plugins.Job
 
         public void Run(CancellationToken taskCancelToken, LoggerList loggers)
         {
+            //Create the build Environment
+            Class.Environment env = new Class.Environment();
             //Create Build Object
             Build build = CreateBuild();
             //Create Job Build logger
             JobBuildLogger buildLogger = new JobBuildLogger(Name, build.Number);
             loggers.AddLogger(buildLogger);
+
+            env.Properties.Add("jobName", Name);
+            env.Properties.Add("buildNumber", build.Number.ToString());
 
             //Start Execution
 
@@ -115,17 +120,12 @@ namespace Library.Plugins.Job
 
             try
             {
-                //Create the build Environment
-                Class.Environment env = new Class.Environment();
-
                 foreach(Property prop in Properties)
                 {
                     prop.Definition.Apply(env, prop.Parameters.ToArray(), Node, failedTokenSource, loggers);
                     CheckIfBuildCanceled(taskCancelToken,build,buildLogger);
                     failedTokenSource.Token.ThrowIfFailed();
                 }
-
-                env.Properties.Add("buildNumber", build.Number.ToString());
 
                 PreBuild(build, env, taskCancelToken, failedTokenSource, loggers);
                 Build(build, env, taskCancelToken, failedTokenSource, loggers);
@@ -142,9 +142,10 @@ namespace Library.Plugins.Job
             }
             catch(FailedBuildException e)
             {
-                build.Status = "FAILED";
                 buildLogger.Log(new Log("BUILD FAILED"));
                 buildLogger.Log(new Log("\nEnd at " + DateTime.Now));
+
+                build.Status = "FAILED";
             }
         }
 
