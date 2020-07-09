@@ -1,10 +1,12 @@
 ﻿using Library.Encodable;
 using Library.Interface;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security;
 
 namespace Library.Class.Node
 {
@@ -15,9 +17,10 @@ namespace Library.Class.Node
         public string Name { get; set; }
         public string Host { get; set; }
         public string WorkSpace { get; set; }
+        public int NbConcurrence { get; set; }
 
         private Socket _clientSocket;
-        private byte[] _buffer;
+        private List<byte[]> _buffers;
 
         public Node(string host, int port)
         {
@@ -26,37 +29,38 @@ namespace Library.Class.Node
             _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _clientSocket.Connect(IPAddress.Parse(Host), port);
 
-            _buffer = new byte[1024];
-            _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, ReceiveCallBack, _clientSocket);
+            _buffers = new List<byte[]>();
         }
 
         #endregion
 
         #region Private Methods
 
-        private void ReceiveCallBack(IAsyncResult result)
+        private void BeingReceive()
+        {
+            byte[] buffer = new byte[1024];
+            int indexBuffer = _buffers.Count - 1;
+            _buffers.Add(buffer);
+            _clientSocket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, (asyncResult) => {
+                ReceiveCallBack(asyncResult, indexBuffer);
+            }, _clientSocket);
+        }
+
+        private void ReceiveCallBack(IAsyncResult result, int indexBuffer)
         {
             //Nb of Byte of result
             int nbByte = _clientSocket.EndReceive(result);
-            //Result Data
-            byte[] buffer = new byte[nbByte];
-            Array.Copy(
-                _buffer,
-                buffer,
-                nbByte
-            );
 
-            _clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, ReceiveCallBack, _clientSocket);
-        }
+            object obj = null;
 
-        private void SendData<T>(T data)
-        {
-            using (MemoryStream memorystream = new MemoryStream())
+            using (MemoryStream memorystream = new MemoryStream(_buffers[indexBuffer]))
             {
                 BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(memorystream, data);
-                _clientSocket.Send(memorystream.ToArray());
+                obj = bf.Deserialize(memorystream);
             }
+
+            _buffers.RemoveAt(indexBuffer);
+            BeingReceive();
         }
 
         #endregion
@@ -65,13 +69,27 @@ namespace Library.Class.Node
 
         public void ConsoleLog(ConsoleLog consoleLog)
         {
-            SendData(consoleLog);
+            _clientSocket.Send(consoleLog.ToBinary());
         }
-
-        public void RunProcess(ProcessRunInfo processRunInfo)
+        
+        public void RunProcess(string fileName, string args, Dictionary<string,string> environments, string workingDir = "")
         {
-            processRunInfo.workingDirectory = WorkSpace + "\\" + processRunInfo.workingDirectory;
-            SendData(processRunInfo);
+            ServerInstance<ProcessRunInfo> instance = new ServerInstance<ProcessRunInfo>();
+            instance.obj = new ProcessRunInfo()
+            {
+                fileName = fileName,
+                args = args,
+                workingDirectory = WorkSpace + "\\" + workingDir
+            };
+
+            foreach (KeyValuePair<string, string> prop in environments)
+                instance.obj.vars += prop.Key.ToUpper() + ":" + prop.Value + ",";
+
+            instance.obj.vars = instance.obj.vars.Substring(0, instance.obj.vars.Length - 1);
+
+            //BeingReceive();
+
+            _clientSocket.Send(instance.ToBinary());
         }
 
         #endregion

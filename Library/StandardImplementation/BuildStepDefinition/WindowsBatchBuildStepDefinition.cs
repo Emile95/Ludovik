@@ -23,19 +23,12 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
 
             buildLogger.Log(new Log("[windows-batch] : " + command));
 
-            Encodable.ProcessRunInfo info = new Encodable.ProcessRunInfo()
-            {
-                fileName = "cmd.exe",
-                args = "/c" + command,
-                workingDirectory = env.Properties["jobName"]
-            };
-
-            foreach (KeyValuePair<string, string> prop in env.Properties)
-                info.vars += prop.Key.ToUpper() + ":" + prop.Value + ",";
-
-            info.vars = info.vars.Substring(0, info.vars.Length - 1);
-
-            node.RunProcess(info);
+            node.RunProcess(
+                "cmd.exe",
+                "/c" + command,
+                env.Properties,
+                env.Properties["jobName"]
+            );
         }
 
         #endregion
