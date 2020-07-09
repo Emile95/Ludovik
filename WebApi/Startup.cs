@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace WebApi
@@ -49,7 +50,7 @@ namespace WebApi
             return loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginLocation)));
         }
 
-        static IEnumerable<T> CreatePlugins<T>(Assembly assembly) where T : class
+        static void CreatePlugins<T>(Assembly assembly) where T : class
         {
             int count = 0;
 
@@ -61,7 +62,7 @@ namespace WebApi
                     if (result != null)
                     {
                         count++;
-                        yield return result;
+                        PluginStorage.AddPlugin<T>(result.GetType());
                     }
                 }
             }
@@ -85,6 +86,11 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string[] pluginPaths = Directory.GetFiles(Directory.GetCurrentDirectory()+"\\"+"plugins" , "*.dll", SearchOption.AllDirectories);
+
+            foreach (string path in pluginPaths)
+                CreatePlugins<ParameterDefinition>(LoadPlugin(path));
+
             services.AddControllers();
 
             services.AddSingleton<ThreadApplication>();
@@ -94,7 +100,7 @@ namespace WebApi
 
             PluginStorage.AddPlugin<Job>(typeof(StandardJob));
 
-            PluginStorage.AddPlugin<ParameterDefinition>(typeof(StringParameterDefinition));
+            //PluginStorage.AddPlugin<ParameterDefinition>(typeof(StringParameterDefinition));
             PluginStorage.AddPlugin<ParameterDefinition>(typeof(BoolParameterDefinition));
             PluginStorage.AddPlugin<ParameterDefinition>(typeof(LabelParameterDefinition));
 

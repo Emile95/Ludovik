@@ -23,12 +23,13 @@ namespace Library.StandardImplementation.WindowsBatchBuildStepDefinition
 
             buildLogger.Log(new Log("[windows-batch] : " + command));
 
+            /*
             node.RunProcess(
                 "cmd.exe",
                 "/c" + command,
                 env.Properties,
                 env.Properties["jobName"]
-            );
+            );*/
         }
 
         #endregion
