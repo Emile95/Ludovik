@@ -23,7 +23,7 @@ node {
 	def version;
 
     stage("Fetch repository"){
-        git branch: "${BRANCH_NAME}", credentialsId: 'a38db37b-11d9-41fa-9348-cbbb25a8dec8', url: 'https://github.com/Emile95/VimoWebApi';
+        git branch: "${BRANCH_NAME}", credentialsId: 'a38db37b-11d9-41fa-9348-cbbb25a8dec8', url: "https://github.com/Emile95/Ludovik";
 		/*version = getParamFromFile("version.txt");
 		currentBuild.displayName = "#${BUILD_NUMBER}_${version['MAJOR']}.${version['MINOR']}.${version['PATCH']}.${version['BUILD']}";*/
     }
