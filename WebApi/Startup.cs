@@ -9,8 +9,6 @@ using Library.Plugins.Logger;
 using Library.Plugins.ParameterDefinition;
 using Library.Plugins.PropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
-using Library.StandardImplementation.LabelParameterDefinition;
-using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
 using Library.StandardImplementation.StandardLogger;
 using Library.StandardImplementation.WindowsBatchBuildStepDefinition;
 using Microsoft.AspNetCore.Builder;
@@ -54,7 +52,7 @@ namespace WebApi
                 if (typeof(T).IsAssignableFrom(type))
                 {
                     count++;
-                    //if (!PluginStorage.IsExistingImplementation<T>(type))
+                    if (!PluginStorage.IsExistingImplementation<T>(type))
                         PluginStorage.AddPlugin<T>(type);
                 }
             }
