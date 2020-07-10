@@ -38,7 +38,7 @@ node {
 		//bat("copy version.txt ${packagePath}");
     }
 	
-	if("{PackageLibNugget}" == "true") {
+	if(PackageLibNugget) {
 		build job: '../../../NugetAddToRepository', parameters: [
 			string(name: 'PACKAGE_PATH', value: "{WORKSPACE}/Library/bin/Release/*.nupkg"), 
 			string(name: 'REPOSITORY_PATH', value: "F:\\\\Prog\\Ludovik\\nugetPackages")
