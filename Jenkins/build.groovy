@@ -12,6 +12,7 @@ properties(
     [
         parameters([
 			string(defaultValue: 'http://localhost:5001/', name: 'APP_URL'),
+			booleanParameter(defaultValue: 'false', name: 'PackageLibNugget')
 		])
     ]
 )
@@ -38,4 +39,5 @@ node {
     }
 	
     archiveArtifacts "WebApi/bin/Release/netcoreapp3.1/**";
+	archiveArtifacts "Library/bin/Release/*.nupkg";
 }
