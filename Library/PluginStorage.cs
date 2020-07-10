@@ -22,6 +22,11 @@ namespace Library
 
         }
 
+        public static bool IsExistingImplementation<T>(Type type)
+        {
+            return Plugins[typeof(T)].Contains(type);
+        }
+
         public static void AddPlugin<T>(Type type)
         {
             Plugins[typeof(T)].Add(type);

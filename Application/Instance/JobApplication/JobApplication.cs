@@ -52,7 +52,7 @@ namespace Application.JobApplication
             //Load job from folder configuration
             job.LoadFromFolder("jobs", model.Name);
 
-            job.Node = _nodeApplication.GetNode(job.GetType().GetProperty("Label").GetValue(job) as string);
+            //job.Node = _nodeApplication.GetNode(job.GetType().GetProperty("Label").GetValue(job) as string);
 
             //Create Logger list for the run
             LoggerList loggers = new LoggerList();

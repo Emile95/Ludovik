@@ -8,15 +8,10 @@ using Library.Plugins.Job;
 using Library.Plugins.Logger;
 using Library.Plugins.ParameterDefinition;
 using Library.Plugins.PropertyDefinition;
-using Library.StandardImplementation.BoolParameterDefinition;
-using Library.StandardImplementation.DescriptionPropertyDefinition;
 using Library.StandardImplementation.JobBuildLogger;
 using Library.StandardImplementation.LabelParameterDefinition;
-using Library.StandardImplementation.NodePropertyDefinition;
 using Library.StandardImplementation.ParameterizedRunPropertyDefinition;
-using Library.StandardImplementation.StandardJob;
 using Library.StandardImplementation.StandardLogger;
-using Library.StandardImplementation.StringParameterDefinition;
 using Library.StandardImplementation.WindowsBatchBuildStepDefinition;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,22 +53,19 @@ namespace WebApi
             {
                 if (typeof(T).IsAssignableFrom(type))
                 {
-                    T result = Activator.CreateInstance(type) as T;
-                    if (result != null)
-                    {
-                        count++;
-                        PluginStorage.AddPlugin<T>(result.GetType());
-                    }
+                    count++;
+                    //if (!PluginStorage.IsExistingImplementation<T>(type))
+                        PluginStorage.AddPlugin<T>(type);
                 }
             }
 
-            if (count == 0)
+            /*if (count == 0)
             {
                 string availableTypes = string.Join(",", assembly.GetTypes().Select(t => t.FullName));
                 throw new ApplicationException(
                     $"Can't find any type which implements {typeof(T).ToString()} in {assembly} from {assembly.Location}.\n" +
                     $"Available types: {availableTypes}");
-            }
+            }*/
         }
 
         public Startup(IConfiguration configuration)
@@ -88,8 +80,17 @@ namespace WebApi
         {
             string[] pluginPaths = Directory.GetFiles(Directory.GetCurrentDirectory()+"\\"+"plugins" , "*.dll", SearchOption.AllDirectories);
 
+            //Get ParameterDefinition implementation
             foreach (string path in pluginPaths)
                 CreatePlugins<ParameterDefinition>(LoadPlugin(path));
+
+            //Get PropertyDefinition implementation
+            foreach (string path in pluginPaths)
+                CreatePlugins<PropertyDefinition>(LoadPlugin(path));
+
+            //Get Job implementation
+            foreach (string path in pluginPaths)
+                CreatePlugins<Job>(LoadPlugin(path));
 
             services.AddControllers();
 
@@ -98,15 +99,6 @@ namespace WebApi
 
             services.AddScoped<IJobApplication, JobApplication>();
 
-            PluginStorage.AddPlugin<Job>(typeof(StandardJob));
-
-            //PluginStorage.AddPlugin<ParameterDefinition>(typeof(StringParameterDefinition));
-            PluginStorage.AddPlugin<ParameterDefinition>(typeof(BoolParameterDefinition));
-            PluginStorage.AddPlugin<ParameterDefinition>(typeof(LabelParameterDefinition));
-
-            PluginStorage.AddPlugin<PropertyDefinition>(typeof(DescriptionPropertyDefinition));
-            PluginStorage.AddPlugin<PropertyDefinition>(typeof(ParameterizedRunPropertyDefinition));
-            PluginStorage.AddPlugin<PropertyDefinition>(typeof(NodePropertyDefinition));
             PluginStorage.AddPlugin<PropertyDefinition>(typeof(WindowsBatchBuildStepDefinition));
 
             PluginStorage.AddPlugin<BuildStepDefinition>(typeof(WindowsBatchBuildStepDefinition));
