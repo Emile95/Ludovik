@@ -12,7 +12,7 @@ properties(
     [
         parameters([
 			string(defaultValue: 'http://localhost:5001/', name: 'APP_URL'),
-			booleanParameter(defaultValue: 'false', name: 'PackageLibNugget')
+			booleanParam(defaultValue: 'false', name: 'PackageLibNugget')
 		])
     ]
 )
@@ -38,6 +38,12 @@ node {
 		//bat("copy version.txt ${packagePath}");
     }
 	
+	if("{PackageLibNugget}" == "true") {
+		build job: '../../../NugetAddToRepository', parameters: [
+			string(name: 'PACKAGE_PATH', value: "{WORKSPACE}/Library/bin/Release/*.nupkg"), 
+			string(name: 'REPOSITORY_PATH', value: "F:\\\\Prog\\Ludovik\\nugetPackages")
+		];
+	}
+
     archiveArtifacts "WebApi/bin/Release/netcoreapp3.1/**";
-	archiveArtifacts "Library/bin/Release/*.nupkg";
 }
