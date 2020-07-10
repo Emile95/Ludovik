@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="jobs\**" />
+    <Compile Remove="nodes\**" />
+    <Compile Remove="plugins\**" />
+    <Content Remove="jobs\**" />
+    <Content Remove="nodes\**" />
+    <Content Remove="plugins\**" />
+    <EmbeddedResource Remove="jobs\**" />
+    <EmbeddedResource Remove="nodes\**" />
+    <EmbeddedResource Remove="plugins\**" />
+    <None Remove="jobs\**" />
+    <None Remove="nodes\**" />
+    <None Remove="plugins\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 

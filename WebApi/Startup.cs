@@ -76,20 +76,18 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string[] pluginPaths = Directory.GetFiles(Directory.GetCurrentDirectory()+"\\"+"plugins" , "*.dll", SearchOption.AllDirectories);
+            if (Directory.Exists(Directory.GetCurrentDirectory() + "\\" + "plugins"))
+            {
+                string[] pluginPaths = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\" + "plugins", "*.dll", SearchOption.AllDirectories);
 
-            //Get ParameterDefinition implementation
-            foreach (string path in pluginPaths)
-                CreatePlugins<ParameterDefinition>(LoadPlugin(path));
-
-            //Get PropertyDefinition implementation
-            foreach (string path in pluginPaths)
-                CreatePlugins<PropertyDefinition>(LoadPlugin(path));
-
-            //Get Job implementation
-            foreach (string path in pluginPaths)
-                CreatePlugins<Job>(LoadPlugin(path));
-
+                foreach (string path in pluginPaths)
+                {
+                    CreatePlugins<ParameterDefinition>(LoadPlugin(path));
+                    CreatePlugins<PropertyDefinition>(LoadPlugin(path));
+                    CreatePlugins<Job>(LoadPlugin(path));
+                }
+            }
+            
             services.AddControllers();
 
             services.AddSingleton<ThreadApplication>();
