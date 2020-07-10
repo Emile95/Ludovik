@@ -37,5 +37,5 @@ node {
 		//bat("copy version.txt ${packagePath}");
     }
 	
-    archiveArtifacts "WebApi/bin/Release/netcoreapp2.1/publish/**";
+    archiveArtifacts "WebApi/bin/Release/netcoreapp3.1/**";
 }
